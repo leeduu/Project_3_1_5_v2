@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Role implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
 
@@ -53,5 +53,10 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return getName();
+    }
+
+    @Override
+    public String toString() {
+        return name.replace("ROLE_", "");
     }
 }

@@ -22,6 +22,13 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public List<User> showAllUsers() {
-        return entityManager.createQuery("SELECT username, email FROM User WHERE id IN (SELECT user_id FROM users_roles)", User.class).getResultList();
+        return entityManager.createQuery("from User", User.class).getResultList();
+    }   //"SELECT username, email FROM User WHERE id IN (SELECT user_id FROM users_roles)", User.class
+
+    @Override
+    public User update(User user) {
+        return entityManager.merge(user);
     }
+
+
 }

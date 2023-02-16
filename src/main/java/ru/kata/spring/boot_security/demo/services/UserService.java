@@ -8,4 +8,5 @@ import java.util.List;
 public interface UserService {
     User findByUsername(String username);
     List<User> showAllUsers();
+    User update(User user);
 }

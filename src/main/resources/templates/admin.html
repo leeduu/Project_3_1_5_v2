@@ -5,7 +5,37 @@
 </head>
 <body>
 <h1>Admin, welcome spring boot security page!</h1>
-
-
+<br>
+<div align="center">
+<!--    <p th:text="'Your profile: '+${showUserDetails.getUsername()}+' '+${showUserDetails.getEmail()}">VALUE</p>-->
+</div>
+<br>
+<br>
+All Users Control Pane
+<div align="center">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">User ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="show: ${showAllUsers}">
+            <td th:text="${show.getId()}"/>
+            <td th:text="${show.getUsername()}"/>
+            <td th:text="${show.getEmail()}"/>
+            <td th:text="${show.getRoles()}"/>
+            <td>
+                <a th:href="@{/admin/update/{username}(username=${show.getUsername()})}">Edit</a>
+                <a th:href="@{/admin/update/{username}(username=${show.getUsername()})}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <h6><a href="/admin/new">New User</a></h6>
+</div>
 </body>
 </html>

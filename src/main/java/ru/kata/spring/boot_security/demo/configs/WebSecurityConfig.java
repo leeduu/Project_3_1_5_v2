@@ -19,86 +19,47 @@ import javax.xml.crypto.dom.DOMCryptoContext;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private SuccessUserHandler successUserHandler;
     private CustomUserDetailsService customUserDetailsService;
-    private DataSource dataSource;
-    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, DataSource dataSource) {
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, SuccessUserHandler successUserHandler) {
         this.customUserDetailsService = customUserDetailsService;
-        this.dataSource = dataSource;
+        this.successUserHandler = successUserHandler;
     }
-
-//    private DataSource dataSource;
-//    public WebSecurityConfig(DataSource dataSource) {
-//        this.dataSource = dataSource;
-//    }
-
-//    private final SuccessUserHandler successUserHandler;
-//    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
-//        this.successUserHandler = successUserHandler;
-//    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(8);
+        return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/", "/index").permitAll()
+            .antMatchers("/", "/index", "/login").permitAll()
+            .antMatchers("/admin/**").hasAnyRole("ADMIN")
+            .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
             .anyRequest().authenticated()
             .and()
-            .formLogin()//.successHandler(successUserHandler)
+            .formLogin().successHandler(successUserHandler)
             .permitAll()
+            .and()
+            .exceptionHandling().accessDeniedPage("/error")
             .and()
             .logout()
             .permitAll();
     }
-//
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {
-//        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-//        auth.setUserDetailsService(userService);
-//        auth.setPasswordEncoder(passwordEncoder());
-//        return auth;
-//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
-//        auth.jdbcAuthentication()
-//                        .dataSource(dataSource).passwordEncoder(passwordEncoder())
-//                        .usersByUsernameQuery("select username, password, id from users_table where username=?", userService.findByUsername(username))
-//                                .authoritiesByUsernameQuery("SELECT * FROM users_table ut JOIN users_roles ur ON (ut.id = ur.user_id) JOIN roles ON (ur.role_id = roles.id)");
-//        auth.authenticationProvider(daoAuthenticationProvider());
     }
 
-    /*
-
-SELECT * FROM users_table ut
-    JOIN users_roles ur ON (ut.id = ur.user_id)
-    JOIN roles ON (ur.role_id = roles.id);
-
-SELECT role_id FROM users_roles
-    WHERE role_id IN (SELECT user_id FROM users_table);
-
-INSERT INTO users_roles
-VALUES ((SELECT MAX(id) FROM users_table ), 2);
-
-    -- configure --
-
-    // аутентификация inMemory
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("user")
-                        .roles("USER")
-                        .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
-    */
+//    @Bean
+//    public DaoAuthenticationProvider daoAuthenticationProvider() {  // существует ли юзер...
+//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+//        authenticationProvider.setPasswordEncoder(passwordEncoder());
+//        authenticationProvider.setUserDetailsService(customUserDetailsService);  // ...если да - положить в Spring Security Context
+//        return authenticationProvider;
+//    }
 }
