@@ -101,13 +101,18 @@ public class User implements UserDetails {
         return getRoles();
     }
 
-    public User(int id, String username, String password, String email, List<Role> roles) {
-        this.id = id;
+    public User(String username, String password, String email, List<Role> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.roles = roles;
     }
+
+//    public User(String username, String password, String email) {
+//        this.username = username;
+//        this.password = password;
+//        this.email = email;
+//    }
 
     @Override
     public String toString() {

@@ -1,11 +1,8 @@
 package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
-import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
-import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.List;
 
@@ -16,9 +13,31 @@ public class RoleServiceImpl implements RoleService {
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
-
-    @Transactional
-    public List<Role> findByIdRoles(List<Integer> id) {
-        return roleRepository.findByIdRoles(id);
+//
+//    @Override
+//    public List<Role> findByIdRoles(int id) {
+//        return null;
+//    }
+//
+    @Override
+    public List<Role> getList() {
+        return roleRepository.getRolesList();
     }
+
+    @Override
+    public List<Role> findRoleByName(String name) {
+        return roleRepository.findRoleByName(name);
+    }
+
+
+//    @Transactional
+//    @Override
+//    public List<Role> findByIdRoles(int id) {
+//        return roleRepository.findRoleById(id);
+//    }
+//
+//    @Override
+//    public List<Role> getRolesList() {
+//        return roleRepository.getRolesList();
+//    }
 }

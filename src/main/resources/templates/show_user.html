@@ -10,9 +10,14 @@
 </div>
 <br>
 <div align="center">
-<b>Your profile</b>
-<p th:text="'Username: '+${showUserDetails.getUsername()}">VALUE</p>
-<p th:text="'Email: '+${showUserDetails.getEmail()}">VALUE</p>
+<b>Chosen profile</b>
+<p th:text="'Username: '+${show_user.getUsername()}">VALUE</p>
+<p th:text="'Email: '+${show_user.getEmail()}">VALUE</p>
+<p th:text="'Roles: '+${show_user.getRoles()}">VALUE</p>
+    <br>
+    <form th:method="DELETE" th:action="@{/admin/{username}/delete(username=${show_user.getUsername()})}">
+        <input type="submit" value="Delete"/>
+    </form>
 </div>
 </body>
 </html>

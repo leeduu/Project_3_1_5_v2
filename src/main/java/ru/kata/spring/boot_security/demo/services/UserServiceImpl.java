@@ -15,25 +15,33 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    @Transactional
-    public User findByUsername(String username) {
+    @Override
+    public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    @Transactional
+    @Override
     public List<User> showAllUsers() {
         return userRepository.showAllUsers();
     }
 
+    @Transactional
     @Override
-    public User update(User user) {
-        return userRepository.update(user);
+    public void update(int id, User user) {
+        userRepository.update(id, user);
     }
 
-//    @Transactional
-//    public User showUser(int username) {
-//        return userRepository.findByUsername(username);
-//    }
+    @Transactional
+    @Override
+    public void save(User user) throws Exception {
+        // добавить проверку юзернейма?
+        userRepository.save(user);
+    }
 
+    @Transactional
+    @Override
+    public void delete(String username) {
+        userRepository.delete(username);
+    }
 
 }
