@@ -38,17 +38,16 @@ public class UserRepositoryImpl implements UserRepository {
         entityManager.merge(user);
     }
 
-    // ДОПОЛНИТЬ
     @Override
     public void save(User user) throws Exception {
             if (userExists(user.getUsername())) {
                 throw new Exception("User with these details already exists");
             }
-            // реализовать передачу выбранной роли
-        User newUser = new User();
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(user.getPassword());
-        newUser.setEmail(user.getEmail());
+            // реализовать передачу выбранной роли и энкодинг пароля
+//        User newUser = new User();
+//        newUser.setUsername(user.getUsername());
+//        newUser.setPassword(user.getPassword());
+//        newUser.setEmail(user.getEmail());
 //         newUser.setRoles(Arrays.asList((Role) roleRepository.findRoleByName("ROLE_USER")));
 //        if (newUser.getRoles().equals("USER")) {
 //            Role roleUser = (Role) roleRepository.findRoleByName("ROLE_USER");
