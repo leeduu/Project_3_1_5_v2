@@ -82,9 +82,8 @@ public class AdminController {
 //    }
 
     @PostMapping("/admin/new")    // сохранение нового юзера и показ всех юзеров
-    public String newUser(User user, @RequestParam(value = "roles") List<String> selectedRoles) throws Exception {
-//        user.setRoles(selectedRoles.stream().map(role -> new User(role)).collect(Collectors.toList())); // красным new User(role)
-        userService.save(user);
+    public String newUser(User user, @RequestParam(value = "roles") List<Integer> selectedRoles) throws Exception {
+        userService.save(user, selectedRoles);  // полученный список role.id ???
         return "redirect:/admin";
     }
 

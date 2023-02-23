@@ -4,7 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
@@ -12,6 +11,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.sql.PreparedStatement;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,13 +20,8 @@ import java.util.Set;
 public class UserRepositoryImpl implements UserRepository {
 
     private final EntityManager entityManager;
-//    private final PasswordEncoder passwordEncoder;
-
-    public UserRepositoryImpl(EntityManager entityManager
-//            , PasswordEncoder passwordEncoder
-                              ) {
+    public UserRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
-//        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -58,20 +53,14 @@ public class UserRepositoryImpl implements UserRepository {
  */
 
     @Override
-    public void save(User user) throws Exception {
+    public void save(User user, List<Integer> selectedRoles) throws Exception {
             if (userExists(user.getUsername())) {
                 throw new Exception("User with these details already exists");
             }
-//        User newUser = new User();
-//        newUser.setUsername(user.getUsername());
-//        newUser.setPassword(user.getPassword());
-//        newUser.setEmail(user.getEmail());
-//         newUser.setRoles(Arrays.asList((Role) roleRepository.findRoleByName("ROLE_USER")));
-//        if (newUser.getRoles().equals("USER")) {
-//            Role roleUser = (Role) roleRepository.findRoleByName("ROLE_USER");
-//            newUser.setRoles((List<Role>) roleUser);
-//        }
         entityManager.persist(user);
+        Integer i = user.getId();
+        String s = "insert into users_roles (user_id, role_id) values (?, ?)";
+        selectedRoles.forEach(r -> entityManager.createQuery(s, i, r)); // Cannot resolve method 'createQuery(String, Integer, Integer)'
     }
 
     private boolean userExists(String username) {

@@ -44,9 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void save(User user) throws Exception {
+    public void save(User user, Integer[] selectedRoles) throws Exception {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        userRepository.save(user, selectedRoles);
     }
 
     @Transactional

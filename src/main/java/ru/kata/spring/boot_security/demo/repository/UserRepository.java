@@ -11,7 +11,7 @@ public interface UserRepository /*extends JpaRepository<User, Integer> */{
     User findByUsername(String username);
     List<User> showAllUsers();
     void update(int id, User user);
-    void save(User user) throws Exception;
+    void save(User user, List<Integer> selectedRoles) throws Exception;
     void delete(String username);
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }
