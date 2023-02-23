@@ -19,8 +19,8 @@ import javax.xml.crypto.dom.DOMCryptoContext;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private SuccessUserHandler successUserHandler;
-    private CustomUserDetailsService customUserDetailsService;
+    private final SuccessUserHandler successUserHandler;
+    private final CustomUserDetailsService customUserDetailsService;
     public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, SuccessUserHandler successUserHandler) {
         this.customUserDetailsService = customUserDetailsService;
         this.successUserHandler = successUserHandler;

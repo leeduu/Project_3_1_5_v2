@@ -1,24 +1,31 @@
 package ru.kata.spring.boot_security.demo.repository;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import javax.persistence.EntityManager;
-import java.util.Arrays;
+import javax.persistence.TypedQuery;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private EntityManager entityManager;
-    private final RoleRepository roleRepository;
+    private final EntityManager entityManager;
 //    private final PasswordEncoder passwordEncoder;
-    public UserRepositoryImpl(EntityManager entityManager,
-                              RoleRepository roleRepository) {
+
+    public UserRepositoryImpl(EntityManager entityManager
+//            , PasswordEncoder passwordEncoder
+                              ) {
         this.entityManager = entityManager;
-        this.roleRepository = roleRepository;
 //        this.passwordEncoder = passwordEncoder;
     }
 
@@ -38,12 +45,23 @@ public class UserRepositoryImpl implements UserRepository {
         entityManager.merge(user);
     }
 
+/*  ДРУГОЙ ВАРИАНТ UPDATE
+    public void updateUser(String username, User newUser) {
+        User user = userRepository.findByUsername(username);
+        user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        user.setFirstname(newUser.getFirstname());
+        user.setLastname(newUser.getLastname());
+        user.setEmail(newUser.getEmail());
+        user.setRoles(newUser.getRoles());
+        entityManager.merge(user);
+    }
+ */
+
     @Override
     public void save(User user) throws Exception {
             if (userExists(user.getUsername())) {
                 throw new Exception("User with these details already exists");
             }
-            // реализовать передачу выбранной роли и энкодинг пароля
 //        User newUser = new User();
 //        newUser.setUsername(user.getUsername());
 //        newUser.setPassword(user.getPassword());
@@ -64,6 +82,20 @@ public class UserRepositoryImpl implements UserRepository {
     public void delete(String username) {
         User user = findByUsername(username);
         entityManager.remove(entityManager.find(User.class, user.getId()));
+    }
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = findByUsername(username);    // создаем пользователя, которого ищем в базе по юзернейму
+        if (user == null) {
+            throw new UsernameNotFoundException("Not found");
+        }
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        for (Role role: user.getRoles()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())); // находим все роли пользователя и отправляем в разрешения
+        }
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 
 }

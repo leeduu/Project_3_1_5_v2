@@ -1,5 +1,8 @@
 package ru.kata.spring.boot_security.demo.repository;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.List;
@@ -10,4 +13,5 @@ public interface UserRepository /*extends JpaRepository<User, Integer> */{
     void update(int id, User user);
     void save(User user) throws Exception;
     void delete(String username);
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

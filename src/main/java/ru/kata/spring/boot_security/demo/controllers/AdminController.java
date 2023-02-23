@@ -1,17 +1,14 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
-import ru.kata.spring.boot_security.demo.util.UserValidator;
 
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,13 +17,9 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final PasswordEncoder passwordEncoder;
-    private final UserValidator userValidator;
-    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder, UserValidator userValidator) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
-        this.userValidator = userValidator;
     }
 
     @GetMapping("/admin")
@@ -77,31 +70,24 @@ public class AdminController {
 //        return "redirect:/admin";
 //    }
 
-    @PostMapping("/admin/new")    // сохранение нового юзера и показ всех юзеров
-    public String newUser(@ModelAttribute("newUser") User user, BindingResult bindingResult) throws Exception {
-//        userValidator.validate(user, bindingResult);  //добавить валидацию в User
-//            if (bindingResult.hasErrors()) {
-//                return "new";
+//    @PostMapping("/admin/new")    // сохранение нового юзера и показ всех юзеров
+//    public String newUser(@RequestParam User user) throws Exception {
+//            if (user.getRoles() != null) {
+//                List<String> chosenRoles = user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList());
+//                List<Role> newUserRoles = roleService.getList();
+//                user.setRoles(newUserRoles);
 //            }
-            if (user.getRoles() != null) {
-                List<String> chosenRoles = user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList());
-                List<Role> newUserRoles = roleService.getList();
-                user.setRoles(newUserRoles);
-            }
+//        userService.save(user);
+//        return "redirect:/admin";
+//    }
+
+    @PostMapping("/admin/new")    // сохранение нового юзера и показ всех юзеров
+    public String newUser(User user, @RequestParam(value = "roles") List<String> selectedRoles) throws Exception {
+//        user.setRoles(selectedRoles.stream().map(role -> new User(role)).collect(Collectors.toList())); // красным new User(role)
         userService.save(user);
         return "redirect:/admin";
     }
 
-//    @PostMapping("/create")
-//    public String createUser(/*@ModelAttribute("user")*/User user) {
-//        if(user.getRoles()!=null) {
-//            List<String> lsr = user.getRoles().stream().map(r->r.getRole()).collect(Collectors.toList());
-//            List<Role> liRo = userService.listByRole(lsr);
-//            user.setRoles(liRo);
-//        }
-//        userService.add(user);
-//        return "redirect:/admin";
-//    }
 
     @GetMapping("/admin/{username}")   //показывает детали одного юзера
     public String showUser(Model model, @PathVariable("username") String username) {
