@@ -62,11 +62,6 @@ public class AdminController {
         userService.save(user);
         return "redirect:/admin";
     }
-//    @PostMapping("/admin/new")
-//    public ResponseEntity<HttpStatus> newUser(@RequestBody @Valid User user) {
-//        userService.save(user);
-//        return ResponseEntity.ok(HttpStatus.OK);    // отправляется HTTP ответ с пустым телом и статусом 200
-//    }
 
 
     @GetMapping("/{id}")   //показывает детали одного юзера

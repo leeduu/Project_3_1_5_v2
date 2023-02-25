@@ -8,10 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "users_table"/*, uniqueConstraints = @UniqueConstraint(columnNames = "username")*/)
@@ -37,11 +34,11 @@ public class User implements UserDetails {
 
     public User(){}
 
-    @ManyToMany(fetch = FetchType.LAZY/*, cascade = CascadeType.MERGE*/)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+    private Set<Role> roles = new HashSet<>();;
 
     public Integer getId() {
         return id;
@@ -75,11 +72,11 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -108,7 +105,7 @@ public class User implements UserDetails {
         return getRoles();
     }
 
-    public User(Integer id, String username, String password, String email, Collection<Role> roles) {
+    public User(Integer id, String username, String password, String email, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;

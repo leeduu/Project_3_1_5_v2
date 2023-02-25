@@ -6,8 +6,9 @@
     <title>New User</title>
 </head>
 <body>
-<div align="center">
+<div align="right">
   <p><a href="/logout">Logout</a></p>
+<div align="center">
   <form th:method="POST" th:action="@{/admin/new}" th:object="${user}">
     <label for="username">Username</label>
     <input type="text" th:field="*{username}" id="username" required/>

@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <title>Update User</title>
 <body>
-<div align="center">
+<div align="right">
     <p><a href="/logout">Logout</a></p>
+<div align="center">
     <form th:method="PATCH" th:action="@{/admin/{id}/update(id=${user.getId()})}" th:object="${user}">
         <label for="username">Username</label>
         <input type="text" th:field="*{username}" id="username"/>
