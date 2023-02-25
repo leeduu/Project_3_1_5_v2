@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.models.Role;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
@@ -18,8 +17,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public Role findRoleByName(String name) {
-        return entityManager.find(Role.class, name);
-//                .createQuery("from Role where name in :name", Role.class).setParameter("name", name).getResultList();
+        return (Role) entityManager.createQuery("from Role where name in :id", Role.class).setParameter("id", name).getResultList();
     }
 
     @Override
@@ -30,15 +28,26 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public void addRole(Role role) {
+//        entityManager.createQuery("insert into users_roles (user_id, role_id) values ()");
         entityManager.persist(role);
     }
 
-    // ПЕРЕПИСАТЬ
+    @Override
+    public void editRole(Role role) {
+        entityManager.merge(role);
+    }
+
+    @Override
+    public void deleteRole(Role role) {
+        entityManager.remove(role);
+    }
+
 //    @Override
-//    public List<Role> findRoleById(int id) {
-//        return (List<Role>) entityManager.createQuery("from Role where id in :id", Role.class).setParameter("id", id);
+//    public boolean add(Role role) {
+//        entityManager.persist(role);
+//        return true;
 //    }
-//
+
     @Override
     public List<Role> getRolesList() {
         return entityManager.createQuery("from Role", Role.class).getResultList();

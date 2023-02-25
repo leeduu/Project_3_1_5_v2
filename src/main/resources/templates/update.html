@@ -6,6 +6,7 @@
     <title>Update User</title>
 <body>
 <div align="center">
+    <p><a href="/logout">Logout</a></p>
     <form th:method="PATCH" th:action="@{/admin/{id}/update(id=${user.getId()})}" th:object="${user}">
         <label for="username">Username</label>
         <input type="text" th:field="*{username}" id="username"/>

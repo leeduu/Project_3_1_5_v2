@@ -41,15 +41,15 @@ public class RoleServiceImpl implements RoleService {
         roleRepository.addRole(role);
     }
 
+    @Override
+    @Transactional
+    public void editRole(Role role) {
+        roleRepository.editRole(role);
+    }
 
-//    @Transactional
-//    @Override
-//    public List<Role> findByIdRoles(int id) {
-//        return roleRepository.findRoleById(id);
-//    }
-//
-//    @Override
-//    public List<Role> getRolesList() {
-//        return roleRepository.getRolesList();
-//    }
+    @Override
+    @Transactional
+    public void deleteRole(Role role) {
+        roleRepository.deleteRole(role);
+    }
 }

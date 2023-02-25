@@ -57,10 +57,10 @@ public class UserRepositoryImpl implements UserRepository {
         entityManager.remove(findUser(id));
     }
 
-    @Override
+//    @Override
 //    @Transactional
-    public void addNewRole(Role role) {
-        entityManager.persist(role);
-//                .createQuery("insert into users_roles (user_id, role_id) values (user.getId(), i)");
-    }
+//    public void addRole(Role role) {
+//        entityManager.persist(role);
+////                .createQuery("insert into users_roles (user_id, role_id) values (user.getId(), i)");
+//    }
 }

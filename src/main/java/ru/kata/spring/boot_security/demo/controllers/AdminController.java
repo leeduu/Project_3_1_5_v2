@@ -1,20 +1,14 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
-import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -43,10 +37,10 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}/update") // апдейт юзера и показ всех юзеров
-    public String update(@ModelAttribute("user") @Valid User user, @PathVariable("id") Integer id, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "edit";
-        }
+    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @PathVariable("id") Integer id) {
+//        if (bindingResult.hasErrors()) {
+//            return "update";
+//        }
         userService.update(id, user);
         return "redirect:/admin";
     }
@@ -77,8 +71,8 @@ public class AdminController {
 
     @GetMapping("/{id}")   //показывает детали одного юзера
     public String showUser(Model model, @PathVariable("id") Integer id) {
-        model.addAttribute("show_user", userService.findUser(id));
-        return "show_user";
+        model.addAttribute("delete", userService.findUser(id));
+        return "delete";
     }
 
     @DeleteMapping("/{id}/delete")    //удаление юзера
