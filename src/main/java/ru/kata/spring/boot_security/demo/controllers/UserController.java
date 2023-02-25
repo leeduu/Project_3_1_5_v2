@@ -22,10 +22,10 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String findUser(Model model, Principal principal) {
+    public String showUserProfile(Model model, Principal principal) {
         User user = userServiceImpl.findUserByUsername(principal.getName());
-        model.addAttribute("showUserDetails", user);
-        return "user";
+        model.addAttribute("showUserProfile", user);
+        return "user_profile";
     }
 
 }

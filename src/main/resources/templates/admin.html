@@ -6,24 +6,22 @@
 <body>
 <h1>Admin, welcome spring boot security page!</h1>
 <div align="right">
+    <p><a href="/user" class="btn btn-outline-primary btn-sm">Your profile</a></p>
     <p><a href="/logout" class="btn btn-outline-secondary btn-sm">Logout</a></p>
 </div>
 <br>
-<form method="GET" action="user">
-    <input type="submit" value="Your profile"/>
-</form>
 <div align="center">
 <br>
-<br>
 <h4>All Users Control Pane</h4>
-    <table class="table table-bordered"
+    <table class="table"
         style="max-width: 700px; margin: 0 auto">
-        <thead>
+           <thead class="thead-light">
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Username</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
