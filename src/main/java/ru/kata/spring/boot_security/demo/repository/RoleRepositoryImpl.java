@@ -17,7 +17,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public Role findRoleByName(String name) {
-        return (Role) entityManager.createQuery("from Role where name in :id", Role.class).setParameter("id", name).getResultList();
+        return (Role) entityManager.createQuery("from Role where name in :name", Role.class).setParameter("name", name).getResultList();
     }
 
     @Override

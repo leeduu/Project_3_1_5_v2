@@ -2,11 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Update User</title>
 <body>
 <div align="right">
-    <p><a href="/logout">Logout</a></p>
+    <p><a href="/logout" class="btn btn-outline-secondary btn-sm">Logout</a></p>
+</div>
 <div align="center">
     <form th:method="PATCH" th:action="@{/admin/{id}/update(id=${user.getId()})}" th:object="${user}">
         <label for="username">Username</label>
@@ -31,7 +33,7 @@
         </label>
         <br>
         <br>
-        <button type="submit"> Update user</button>
+        <button type="submit" class="btn btn-outline-primary">Update user</button>
     </form>
     </head>
 </div>
