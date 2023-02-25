@@ -4,9 +4,10 @@ import ru.kata.spring.boot_security.demo.models.Role;
 
 import java.util.List;
 
-public interface RoleRepository /*extends JpaRepository<User, Integer> */{
+public interface RoleRepository {
 
-//    List<Role> findRoleById(int id);
     List<Role> getRolesList();
-    List<Role> findRoleByName(String name);
+    Role findRoleByName(String name);
+    Role findRole(Integer id);
+    void addRole(Role role);
 }

@@ -31,8 +31,8 @@
             <td th:text="${show.getEmail()}"/>
             <td th:text="${show.getRoles()}"/>
             <td>
-                <a th:href="@{/admin/{username}/update(username=${show.getUsername()})}">Edit</a>
-                <a th:href="@{/admin/{username}(username=${show.getUsername()})}">Delete</a>
+                <a th:href="@{/admin/{id}/update(id=${show.getId()})}">Edit</a>
+                <a th:href="@{/admin/{id}(id=${show.getId()})}">Delete</a>
             </td>
         </tr>
         </tbody>

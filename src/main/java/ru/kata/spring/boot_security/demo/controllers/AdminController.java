@@ -1,102 +1,89 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import javax.persistence.TypedQuery;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     private final UserService userService;
-    private final RoleService roleService;
-    public AdminController(UserService userService, RoleService roleService) {
+    private final RoleRepository roleRepository;
+    public AdminController(UserService userService, RoleRepository roleRepository) {
         this.userService = userService;
-        this.roleService = roleService;
+        this.roleRepository = roleRepository;
     }
 
-    @GetMapping("/admin")
+    @GetMapping("")
     public String showAllUsers(Model model) {
         model.addAttribute("showAllUsers", userService.showAllUsers());
         return "admin";
     }
 
-    @GetMapping("/admin/{username}/update") //форма апдейта юзера
-    public String updateUser(Model model, @PathVariable("username") String username) {
-        model.addAttribute("updateUser", userService.findUserByUsername(username));
-        List<Role> roles = roleService.getList();
-        model.addAttribute("rolesList", roles);
+    // --------------------- UPDATE  -----------------------------
+
+    @GetMapping("/{id}/update") //форма апдейта юзера
+    public String updateUser(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("user", userService.findUser(id));
+        model.addAttribute("roles", roleRepository.getRolesList());
         return "update";
     }
 
-    @PatchMapping("/admin/{username}/update") // апдейт юзера и показ всех юзеров
-    public String update(@PathVariable("username") String username, @ModelAttribute("updatedUser") User user) {
-        userService.update(user.getId(), user);
+    @PatchMapping("/{id}/update") // апдейт юзера и показ всех юзеров
+    public String update(@ModelAttribute("user") @Valid User user, @PathVariable("id") Integer id, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "edit";
+        }
+        userService.update(id, user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/new") // форма создания нового юзера
+    // --------------------- NEW  -----------------------------
+
+    @GetMapping("/new") // форма создания нового юзера
     public String newUserForm(Model model) {
-        model.addAttribute("newUserForm", new User());
-        List<Role> roles = roleService.getList();
-        model.addAttribute("rolesList", roles);
+        model.addAttribute("user", new User());
+        model.addAttribute("roles", roleRepository.getRolesList());
         return "new";
     }
 
-//    @PostMapping("/admin/new")    // сохранение нового юзера и показ всех юзеров
-//    public String newUser(@ModelAttribute("newUser") User user, BindingResult bindingResult,
-//                          @RequestBody("username") String username, @RequestBody("password") String password, @RequestBody("email") String email,
-//                          @RequestBody("rolesList") List<Role> userRoles) throws Exception {
-//        userValidator.validate(user, bindingResult);  //добавить валидацию в User
-//            if (bindingResult.hasErrors()) {
-//                return "new";
-//            }
-//        User newUser = new User();
-//        newUser.setUsername(username);
-//        newUser.setPassword(passwordEncoder.encode(password));
-//        newUser.setEmail(email);
-////        newUser.setRoles(userRoles);
-//        for (Role r : userRoles) {
-//            newUser.setRoles((List<Role>) r);
+    @PostMapping("/new")    // сохранение нового юзера и показ всех юзеров
+    public String newUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            return "new";
 //        }
-//        userService.save(newUser);
-//        return "redirect:/admin";
-//    }
-
-//    @PostMapping("/admin/new")    // сохранение нового юзера и показ всех юзеров
-//    public String newUser(@RequestParam User user) throws Exception {
-//            if (user.getRoles() != null) {
-//                List<String> chosenRoles = user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList());
-//                List<Role> newUserRoles = roleService.getList();
-//                user.setRoles(newUserRoles);
-//            }
-//        userService.save(user);
-//        return "redirect:/admin";
-//    }
-
-    @PostMapping("/admin/new")    // сохранение нового юзера и показ всех юзеров
-    public String newUser(User user, @RequestParam(value = "roles") List<Integer> selectedRoles) throws Exception {
-        userService.save(user, selectedRoles);  // полученный список role.id ???
+        userService.save(user);
         return "redirect:/admin";
     }
+//    @PostMapping("/admin/new")
+//    public ResponseEntity<HttpStatus> newUser(@RequestBody @Valid User user) {
+//        userService.save(user);
+//        return ResponseEntity.ok(HttpStatus.OK);    // отправляется HTTP ответ с пустым телом и статусом 200
+//    }
 
 
-    @GetMapping("/admin/{username}")   //показывает детали одного юзера
-    public String showUser(Model model, @PathVariable("username") String username) {
-        model.addAttribute("show_user", userService.findUserByUsername(username));
+    @GetMapping("/{id}")   //показывает детали одного юзера
+    public String showUser(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("show_user", userService.findUser(id));
         return "show_user";
     }
 
-    @DeleteMapping("/admin/{username}/delete")    //удаление юзера
-    public String deleteUser(@PathVariable("username") String username) {
-        userService.delete(username);
+    @DeleteMapping("/{id}/delete")    //удаление юзера
+    public String deleteUser(@PathVariable("id") Integer id) {
+        userService.delete(id);
         return "redirect:/admin";
     }
 

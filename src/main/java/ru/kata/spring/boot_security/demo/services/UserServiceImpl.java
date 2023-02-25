@@ -1,34 +1,43 @@
 package ru.kata.spring.boot_security.demo.services;
 
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepositoryImpl;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RoleRepositoryImpl roleRepositoryImpl;
 
     public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder,
-                           RoleRepositoryImpl roleRepositoryImpl) {
+                           @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.roleRepositoryImpl = roleRepositoryImpl;
+    }
+
+    @Override
+    public User findUser(Integer id) {
+        return userRepository.findUser(id);
     }
 
     @Override
     public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findUserByUsername(username);
     }
 
     @Override
@@ -38,26 +47,49 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void update(int id, User user) {
+    public void update(Integer id, User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.update(id, user);
     }
 
     @Transactional
     @Override
-    public void save(User user, Integer[] selectedRoles) throws Exception {
+    public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user, selectedRoles);
+        userRepository.save(user);
     }
 
     @Transactional
     @Override
-    public void delete(String username) {
-        userRepository.delete(username);
+    public void delete(Integer id) {
+        userRepository.delete(id);
     }
 
-    @Transactional
+//    @Override
+//    public void addNewRole(User user, Integer i) {
+//        userRepository.addNewRole(user, i);
+//    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.loadUserByUsername(username);
+        User user = userRepository.findUserByUsername(username);    // создаем пользователя, которого ищем в базе по юзернейму
+        if (user == null) {
+            throw new UsernameNotFoundException("Not found");
+        }
+//        return user;
+//  }
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        for (Role role: user.getRoles()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())); // находим все роли пользователя и отправляем в разрешения
+        }
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
+
+//    @Override
+//    @Transactional
+//    public UserDetails loadUserByUsername(String username) {
+//        User user = userRepository.findUserByUsername(username);
+//        user.getRoles().size();
+//        return user;
+//    }
 }

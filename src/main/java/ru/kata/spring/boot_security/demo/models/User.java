@@ -6,41 +6,48 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Table(name = "users_table", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
+@Table(name = "users_table"/*, uniqueConstraints = @UniqueConstraint(columnNames = "username")*/)
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "username")
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "Name length should be 2-30 characters")
     private String username;
 
     @Column(name = "password")
+    @NotEmpty(message = "Password should not be empty")
+    @Size(min = 8, max = 30, message = "Password length should be 8-30 characters")
     private String password;
 
     @Column(name = "email")
+    @NotEmpty(message = "Email should not be empty")
     private String email;
 
     public User(){}
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY/*, cascade = CascadeType.MERGE*/)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private List<Role> roles;
+    private Collection<Role> roles;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -68,11 +75,11 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public List<Role> getRoles() {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 
@@ -101,7 +108,8 @@ public class User implements UserDetails {
         return getRoles();
     }
 
-    public User(String username, String password, String email, List<Role> roles) {
+    public User(Integer id, String username, String password, String email, Collection<Role> roles) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;

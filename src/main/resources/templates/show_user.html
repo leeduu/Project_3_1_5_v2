@@ -15,7 +15,7 @@
 <p th:text="'Email: '+${show_user.getEmail()}">VALUE</p>
 <p th:text="'Roles: '+${show_user.getRoles()}">VALUE</p>
     <br>
-    <form th:method="DELETE" th:action="@{/admin/{username}/delete(username=${show_user.getUsername()})}">
+    <form th:method="DELETE" th:action="@{/admin/{id}/delete(id=${show_user.getId()})}">
         <input type="submit" value="Delete"/>
     </form>
 </div>

@@ -10,14 +10,27 @@ import java.util.List;
 @Repository
 public class RoleRepositoryImpl implements RoleRepository {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-//    public RoleRepositoryImpl(EntityManager entityManager) {
-//        this.entityManager = entityManager;
-//    }
+//    @PersistenceContext
+    private final EntityManager entityManager;
+    public RoleRepositoryImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
-    public List<Role> findRoleByName(String name) {
-        return entityManager.createQuery("from Role where name in :name", Role.class).setParameter("name", name).getResultList();
+    @Override
+    public Role findRoleByName(String name) {
+        return entityManager.find(Role.class, name);
+//                .createQuery("from Role where name in :name", Role.class).setParameter("name", name).getResultList();
+    }
+
+    @Override
+    public Role findRole(Integer id) {
+        return entityManager.find(Role.class, id);
+//                .createQuery("from Role where name in :name", Role.class).setParameter("name", name).getResultList();
+    }
+
+    @Override
+    public void addRole(Role role) {
+        entityManager.persist(role);
     }
 
     // ПЕРЕПИСАТЬ
@@ -30,6 +43,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     public List<Role> getRolesList() {
         return entityManager.createQuery("from Role", Role.class).getResultList();
     }
+
 
 
 }

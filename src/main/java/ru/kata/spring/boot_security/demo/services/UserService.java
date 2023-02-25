@@ -8,10 +8,12 @@ import ru.kata.spring.boot_security.demo.models.User;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
+    User findUser(Integer id);
     User findUserByUsername(String username);
     List<User> showAllUsers();
-    void update(int id, User user);
-    void save(User user, List<Integer> selectedRoles) throws Exception;
-    void delete(String username);
+    void update(Integer id, User user);
+    void save(User user);
+    void delete(Integer id);
+//    void addNewRole(User user, Integer i);
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }
