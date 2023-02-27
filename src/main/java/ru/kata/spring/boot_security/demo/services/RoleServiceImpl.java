@@ -14,12 +14,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
-//
-//    @Override
-//    public List<Role> findByIdRoles(int id) {
-//        return null;
-//    }
-//
+
     @Override
     public List<Role> getRolesList() {
         return roleRepository.getRolesList();
@@ -35,11 +30,11 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.findRole(id);
     }
 
-    @Override
-    @Transactional
-    public void addRole(Role role) {
-        roleRepository.addRole(role);
-    }
+//    @Override
+//    @Transactional
+//    public void addRole(Role role) {
+//        roleRepository.addRole(role);
+//    }
 
     @Override
     @Transactional

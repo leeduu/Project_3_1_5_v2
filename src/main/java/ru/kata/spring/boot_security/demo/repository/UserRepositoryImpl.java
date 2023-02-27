@@ -1,13 +1,10 @@
 package ru.kata.spring.boot_security.demo.repository;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Transient;
 import java.util.List;
 
 @Repository
@@ -39,7 +36,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
 //    @Transactional
     public void update(Integer id, User user) {
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        for (Role role : user.getRoles()) {
+            entityManager.merge(role);
+        }
         entityManager.merge(user);
     }
 
@@ -47,6 +46,7 @@ public class UserRepositoryImpl implements UserRepository {
 //    @Transactional
     public void save(User user) {
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        addRole(user);
         entityManager.persist(user);
     }
 
@@ -57,10 +57,12 @@ public class UserRepositoryImpl implements UserRepository {
         entityManager.remove(findUser(id));
     }
 
-//    @Override
+    @Override
 //    @Transactional
-//    public void addRole(Role role) {
-//        entityManager.persist(role);
-////                .createQuery("insert into users_roles (user_id, role_id) values (user.getId(), i)");
-//    }
+    public void addRole(User user) {
+        for (Role role : user.getRoles()) {
+            entityManager.persist(role);
+//            entityManager.createQuery("insert into users_roles (user_id, role_id) values (user.getId(), role.getId())");
+        }
+    }
 }

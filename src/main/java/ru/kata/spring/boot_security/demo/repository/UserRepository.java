@@ -12,6 +12,7 @@ public interface UserRepository /*extends JpaRepository<User, Integer> */{
     void update(Integer id, User user);
     void save(User user);
     void delete(Integer id);
+    void addRole(User user);
 //    void addRole(Role role);
 //    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

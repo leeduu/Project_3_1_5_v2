@@ -13,8 +13,11 @@ import java.util.Set;
 public class Role implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
+
+    @Column(name = "name")
     private String name;
 
 //    @Transient
@@ -23,9 +26,9 @@ public class Role implements GrantedAuthority {
 
     public Role(){}
 
-    public Role(Integer id, String name) {
+    public Role(Integer id/*, String name*/) {
         this.id = id;
-        this.name = name;
+//        this.name = name;
     }
 
     public Integer getId() {

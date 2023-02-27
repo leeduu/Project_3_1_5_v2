@@ -7,11 +7,13 @@
 <body>
 <h1>User, welcome spring boot security page!</h1>
 <div align="right">
+<p><a href="/admin" class="btn btn-outline-primary btn-sm">Control Pane</a></p>
 <p><a href="/logout" class="btn btn-outline-secondary btn-sm">Logout</a></p>
 </div>
 <br>
 <div align="center">
 <b><strong>Your profile:</strong></b>
+<br>
 <br>
 <p th:text="'Username: '+${showUserProfile.getUsername()}">VALUE</p>
 <p th:text="'Email: '+${showUserProfile.getEmail()}">VALUE</p>

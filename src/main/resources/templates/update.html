@@ -12,21 +12,27 @@
 <div align="center">
     <form th:method="PATCH" th:action="@{/admin/{id}/update(id=${user.getId()})}" th:object="${user}">
         <label for="username">Username</label>
-        <input type="text" th:field="*{username}" id="username"/>
+        <input type="text" class="form-control form-control-sm" placeholder="2-30 characters" style="max-width: 400px; margin: 0 auto"
+               th:field="*{username}" id="username"/>
+        <div style="color:darkred" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</div>
         <br>
         <br>
         <label for="password">Password</label>
-        <input type="text" th:field="*{password}" id="password"/>
+        <input type="text" class="form-control form-control-sm" placeholder="Min 8 characters" style="max-width: 400px; margin: 0 auto"
+               th:field="*{password}" id="password"/>
+        <div style="color:darkred" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
         <br>
         <br>
         <label for="email">Email</label>
-        <input type="text" th:field="*{email}" id="email"/>
+        <input type="text" class="form-control form-control-sm" placeholder="Example: name@gmail.com" style="max-width: 400px; margin: 0 auto"
+               th:field="*{email}" id="email"/>
+        <div style="color:darkred" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
         <br>
         <br>
         <label>Role:
-            <input type="checkbox" th:name="roles"
-                   th:each="role : ${roles}"
-                   th:text="${role.name}"
+            <input type="checkbox" th:name="rolesList"
+                   th:each="role : ${rolesList}"
+                   th:text="${role.name.toString()}"
                    th:value="${role.id}"
                    th:field="*{roles}"
             />

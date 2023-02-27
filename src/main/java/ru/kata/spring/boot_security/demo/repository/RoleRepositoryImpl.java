@@ -26,11 +26,11 @@ public class RoleRepositoryImpl implements RoleRepository {
 //                .createQuery("from Role where name in :name", Role.class).setParameter("name", name).getResultList();
     }
 
-    @Override
-    public void addRole(Role role) {
-//        entityManager.createQuery("insert into users_roles (user_id, role_id) values ()");
-        entityManager.persist(role);
-    }
+//    @Override
+//    public void addRole(Role role) {
+////        entityManager.createQuery("insert into users_roles (user_id, role_id) values (id, role.id)");
+//        entityManager.persist(role);
+//    }
 
     @Override
     public void editRole(Role role) {
@@ -41,12 +41,6 @@ public class RoleRepositoryImpl implements RoleRepository {
     public void deleteRole(Role role) {
         entityManager.remove(role);
     }
-
-//    @Override
-//    public boolean add(Role role) {
-//        entityManager.persist(role);
-//        return true;
-//    }
 
     @Override
     public List<Role> getRolesList() {
