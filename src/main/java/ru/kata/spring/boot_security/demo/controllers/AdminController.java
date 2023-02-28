@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
@@ -49,9 +50,9 @@ public class AdminController {
                          @ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
                          @PathVariable("id") Integer id) {
-//        if (bindingResult.hasErrors()) {
-//            return "update";
-//        }
+        if (bindingResult.hasErrors()) {
+            return "update";
+        }
         List<Role> newRoles = new ArrayList<>();
         for (String role : chosenRoles) {
             Integer roleId = Integer.valueOf(role);
@@ -73,11 +74,11 @@ public class AdminController {
 
     @PostMapping("/new")    // сохранение нового юзера и показ всех юзеров
     public String newUser(@RequestParam(name = "roles", defaultValue = "0") String[] chosenRoles,
-                          @ModelAttribute("user") @Valid User user,
+                          @ModelAttribute("user") @Validated User user,
                           BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            return "new";
-//        }
+        if (bindingResult.hasErrors()) {
+            return "new";
+        }
         List<Role> newRoles = new ArrayList<>();
         for (String role : chosenRoles) {
             Integer roleId = Integer.valueOf(role);
