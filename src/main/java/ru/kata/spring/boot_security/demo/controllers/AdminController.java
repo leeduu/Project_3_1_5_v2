@@ -52,10 +52,10 @@ public class AdminController {
                          @ModelAttribute("user") User user,
                          BindingResult bindingResult,
                          @PathVariable("id") Integer id, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("rolesList", roleService.getRolesList());
-            return "update";
-        }
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("rolesList", roleService.getRolesList());
+//            return "update";
+//        }
         List<Role> newRoles = new ArrayList<>();
         for (String role : chosenRoles) {
             Integer roleId = Integer.valueOf(role);
@@ -79,10 +79,10 @@ public class AdminController {
     public String newUser(@RequestParam(name = "roles", defaultValue = "0") String[] chosenRoles,
                           @ModelAttribute("user") User user,
                           BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("roles", roleService.getRolesList());
-            return "new";
-        }
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("roles", roleService.getRolesList());
+//            return "new";
+//        }
         List<Role> newRoles = new ArrayList<>();
         for (String role : chosenRoles) {
             Integer roleId = Integer.valueOf(role);
@@ -93,8 +93,6 @@ public class AdminController {
         userService.save(user);
         return "redirect:/admin";
     }
-
-
 
     @GetMapping("/{id}")   //показывает детали одного юзера
     public String showUser(Model model, @PathVariable("id") Integer id) {
