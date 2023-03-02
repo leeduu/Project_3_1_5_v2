@@ -34,7 +34,7 @@ public class User implements UserDetails {
 
     @Column(name = "email")
     @NotEmpty(message = "Email should not be empty")
-    @Email(message = "Email should look like name@gmail.com")
+//    @Email(message = "Email should look like name@gmail.com")
     private String email;
 
     public User(){}
@@ -44,6 +44,7 @@ public class User implements UserDetails {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"/*, referencedColumnName = "id"*/),
             inverseJoinColumns = @JoinColumn(name = "role_id"/*, referencedColumnName = "id"*/))
+    @NotEmpty(message = "At least one role must be checked")
     private List<Role> roles;
 
 //    public void addRole(Role role) {

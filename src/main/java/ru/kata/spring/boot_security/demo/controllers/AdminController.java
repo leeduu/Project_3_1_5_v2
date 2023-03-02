@@ -12,6 +12,8 @@ import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.security.auth.Subject;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,10 +49,11 @@ public class AdminController {
 
     @PatchMapping("/{id}/update") // апдейт юзера и показ всех юзеров
     public String update(@RequestParam(name = "roles", defaultValue = "0") String[] chosenRoles,
-                         @ModelAttribute("user") @Valid User user,
+                         @ModelAttribute("user") User user,
                          BindingResult bindingResult,
-                         @PathVariable("id") Integer id) {
+                         @PathVariable("id") Integer id, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("rolesList", roleService.getRolesList());
             return "update";
         }
         List<Role> newRoles = new ArrayList<>();
@@ -74,9 +77,10 @@ public class AdminController {
 
     @PostMapping("/new")    // сохранение нового юзера и показ всех юзеров
     public String newUser(@RequestParam(name = "roles", defaultValue = "0") String[] chosenRoles,
-                          @ModelAttribute("user") @Validated User user,
-                          BindingResult bindingResult) {
+                          @ModelAttribute("user") User user,
+                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("roles", roleService.getRolesList());
             return "new";
         }
         List<Role> newRoles = new ArrayList<>();
@@ -85,9 +89,11 @@ public class AdminController {
             newRoles.add(roleService.findRole(roleId));
         }
         user.setRoles(newRoles);
+        System.out.println(user);
         userService.save(user);
         return "redirect:/admin";
     }
+
 
 
     @GetMapping("/{id}")   //показывает детали одного юзера
