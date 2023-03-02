@@ -48,7 +48,7 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}/update") // апдейт юзера и показ всех юзеров
-    public String update(@Valid/* @ModelAttribute("user")*/ User user,
+    public String update(@Valid @ModelAttribute("user") User user,
                          BindingResult bindingResult,
                          @RequestParam(name = "roles", defaultValue = "0") String[] chosenRoles,
                          Model model,
@@ -64,6 +64,7 @@ public class AdminController {
             newRoles.add(roleService.findRole(roleId));
         }
         user.setRoles(newRoles);
+        System.out.println(user);
         userService.update(id, user);
         return "redirect:/admin";
     }
