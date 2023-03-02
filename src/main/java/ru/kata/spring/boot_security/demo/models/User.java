@@ -34,7 +34,7 @@ public class User implements UserDetails {
 
     @Column(name = "email")
     @NotEmpty(message = "Email should not be empty")
-//    @Email(message = "Email should look like name@gmail.com")
+    @Email(message = "Email should look like name@gmail.com")
     private String email;
 
     public User(){}

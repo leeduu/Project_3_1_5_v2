@@ -38,7 +38,7 @@ public class AdminController {
         return "admin";
     }
 
-    // --------------------- UPDATE  -----------------------------
+    // --------------------- UPDATE с BindingResult, не получает роли -----------------------------
 
     @GetMapping("/{id}/update") //форма апдейта юзера
     public String updateUser(Model model, @PathVariable("id") Integer id) {
@@ -49,24 +49,25 @@ public class AdminController {
 
     @PatchMapping("/{id}/update") // апдейт юзера и показ всех юзеров
     public String update(@RequestParam(name = "roles", defaultValue = "0") String[] chosenRoles,
-                         @ModelAttribute("user") User user,
+                         @ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
                          @PathVariable("id") Integer id, Model model) {
-//        if (bindingResult.hasErrors()) {
-//            model.addAttribute("rolesList", roleService.getRolesList());
-//            return "update";
-//        }
+        if (bindingResult.hasFieldErrors()) {
+            model.addAttribute("rolesList", roleService.getRolesList());
+            System.out.println(user);
+            return "update";
+        } else {
         List<Role> newRoles = new ArrayList<>();
         for (String role : chosenRoles) {
             Integer roleId = Integer.valueOf(role);
             newRoles.add(roleService.findRole(roleId));
         }
         user.setRoles(newRoles);
-        userService.update(id, user);
+        userService.update(id, user); }
         return "redirect:/admin";
     }
 
-    // --------------------- NEW  -----------------------------
+    // --------------------- NEW без валидации, сохраняет юзера -----------------------------
 
     @GetMapping("/new") // форма создания нового юзера
     public String newUserForm(Model model) {
