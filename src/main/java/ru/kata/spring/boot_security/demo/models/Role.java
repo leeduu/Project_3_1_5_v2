@@ -3,8 +3,6 @@ package ru.kata.spring.boot_security.demo.models;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,15 +18,13 @@ public class Role implements GrantedAuthority {
     @Column(name = "name")
     private String name;
 
-//    @Transient
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
     public Role(){}
 
-    public Role(Integer id/*, String name*/) {
+    public Role(Integer id) {
         this.id = id;
-//        this.name = name;
     }
 
     public Integer getId() {
@@ -75,6 +71,6 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return name.replace("ROLE_", "");
+        return name.replace("ROLE_", "").replaceAll("(\"(^\\\\[|\\\\]$)\")", "");
     }
 }

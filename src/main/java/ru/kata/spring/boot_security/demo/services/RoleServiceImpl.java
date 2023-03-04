@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
@@ -28,23 +27,5 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findRole(Integer id) {
         return roleRepository.findRole(id);
-    }
-
-//    @Override
-//    @Transactional
-//    public void addRole(Role role) {
-//        roleRepository.addRole(role);
-//    }
-
-    @Override
-    @Transactional
-    public void editRole(Role role) {
-        roleRepository.editRole(role);
-    }
-
-    @Override
-    @Transactional
-    public void deleteRole(Role role) {
-        roleRepository.deleteRole(role);
     }
 }

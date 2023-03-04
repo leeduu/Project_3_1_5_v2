@@ -17,8 +17,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findUser(Integer id) {
-//        return entityManager.createQuery("select distinct u from User u left join fetch u.roles where u.id = :id", User.class)
-//                .setParameter("id", id).getSingleResult();
         return entityManager.find(User.class, id);
     }
 
@@ -31,10 +29,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> showAllUsers() {
         return entityManager.createQuery("from User", User.class).getResultList();
-    }   //"SELECT username, email FROM User WHERE id IN (SELECT user_id FROM users_roles)", User.class
+    }
 
     @Override
-//    @Transactional
     public void update(Integer id, User user) {
         for (Role role : user.getRoles()) {
             entityManager.merge(role);
@@ -43,26 +40,21 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-//    @Transactional
     public void save(User user) {
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         addRole(user);
         entityManager.persist(user);
     }
 
     @Override
-//    @Transactional
     public void delete(Integer id) {
         User user = findUser(id);
         entityManager.remove(findUser(id));
     }
 
     @Override
-//    @Transactional
     public void addRole(User user) {
         for (Role role : user.getRoles()) {
             entityManager.persist(role);
-//            entityManager.createQuery("insert into users_roles (user_id, role_id) values (user.getId(), role.getId())");
         }
     }
 }

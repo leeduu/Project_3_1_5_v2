@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repository.RoleRepositoryImpl;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.HashSet;
@@ -65,31 +64,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.delete(id);
     }
 
-//    @Override
-//    public void addNewRole(User user, Integer i) {
-//        userRepository.addNewRole(user, i);
-//    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByUsername(username);    // создаем пользователя, которого ищем в базе по юзернейму
         if (user == null) {
             throw new UsernameNotFoundException("Not found");
         }
-//        return user;
-//  }
+
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Role role: user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())); // находим все роли пользователя и отправляем в разрешения
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
-
-//    @Override
-//    @Transactional
-//    public UserDetails loadUserByUsername(String username) {
-//        User user = userRepository.findUserByUsername(username);
-//        user.getRoles().size();
-//        return user;
-//    }
 }

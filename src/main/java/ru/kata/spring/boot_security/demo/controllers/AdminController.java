@@ -2,24 +2,15 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.security.auth.Subject;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -38,8 +29,6 @@ public class AdminController {
         return "admin";
     }
 
-    // --------------------- UPDATE с BindingResult, не получает роли -----------------------------
-
     @GetMapping("/{id}/update") //форма апдейта юзера
     public String updateUser(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("user", userService.findUser(id));
@@ -47,29 +36,19 @@ public class AdminController {
         return "update";
     }
 
-    @PatchMapping("/{id}/update") // апдейт юзера и показ всех юзеров
+    @PostMapping("/{id}/update") // апдейт юзера и показ всех юзеров
     public String update(@Valid @ModelAttribute("user") User user,
-                         BindingResult bindingResult,
-                         @RequestParam(name = "roles", defaultValue = "0") String[] chosenRoles,
-                         Model model,
+                         @RequestParam(name = "checkboxes", defaultValue = "1") String[] checkboxes,
                          @PathVariable("id") Integer id) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("rolesList", roleService.getRolesList());
-            System.out.println(user);
-            return "update";
-        }
-        List<Role> newRoles = new ArrayList<>();
-        for (String role : chosenRoles) {
+        Set<Role> newRoles = new HashSet<>();
+        for (String role : checkboxes) {
             Integer roleId = Integer.valueOf(role);
             newRoles.add(roleService.findRole(roleId));
         }
         user.setRoles(newRoles);
-        System.out.println(user);
         userService.update(id, user);
         return "redirect:/admin";
     }
-
-    // --------------------- NEW без валидации, сохраняет юзера -----------------------------
 
     @GetMapping("/new") // форма создания нового юзера
     public String newUserForm(Model model) {
@@ -79,20 +58,15 @@ public class AdminController {
     }
 
     @PostMapping("/new")    // сохранение нового юзера и показ всех юзеров
-    public String newUser(@RequestParam(name = "roles", defaultValue = "0") String[] chosenRoles,
-                          @ModelAttribute("user") User user,
-                          BindingResult bindingResult, Model model) {
-//        if (bindingResult.hasErrors()) {
-//            model.addAttribute("roles", roleService.getRolesList());
-//            return "new";
-//        }
-        List<Role> newRoles = new ArrayList<>();
-        for (String role : chosenRoles) {
+    public String newUser(@Valid @ModelAttribute("user") User user,
+                        @RequestParam(name = "checkboxes", defaultValue = "1") String[] checkboxes) {
+        Set<Role> newRoles = new HashSet<>();
+        for (String role : checkboxes) {
             Integer roleId = Integer.valueOf(role);
             newRoles.add(roleService.findRole(roleId));
         }
         user.setRoles(newRoles);
-        System.out.println(user);
+System.out.println(user);
         userService.save(user);
         return "redirect:/admin";
     }

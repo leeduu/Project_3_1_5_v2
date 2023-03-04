@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public class RoleRepositoryImpl implements RoleRepository {
 
-//    @PersistenceContext
     private final EntityManager entityManager;
     public RoleRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -23,14 +22,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public Role findRole(Integer id) {
         return entityManager.find(Role.class, id);
-//                .createQuery("from Role where name in :name", Role.class).setParameter("name", name).getResultList();
     }
-
-//    @Override
-//    public void addRole(Role role) {
-////        entityManager.createQuery("insert into users_roles (user_id, role_id) values (id, role.id)");
-//        entityManager.persist(role);
-//    }
 
     @Override
     public void editRole(Role role) {
@@ -46,7 +38,4 @@ public class RoleRepositoryImpl implements RoleRepository {
     public List<Role> getRolesList() {
         return entityManager.createQuery("from Role", Role.class).getResultList();
     }
-
-
-
 }

@@ -14,6 +14,5 @@ public interface UserService extends UserDetailsService {
     void update(Integer id, User user);
     void save(User user);
     void delete(Integer id);
-//    void addNewRole(User user, Integer i);
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

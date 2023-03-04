@@ -1,11 +1,10 @@
 package ru.kata.spring.boot_security.demo.repository;
 
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.List;
 
-public interface UserRepository /*extends JpaRepository<User, Integer> */{
+public interface UserRepository {
     User findUser(Integer id);
     User findUserByUsername(String username);
     List<User> showAllUsers();
@@ -13,6 +12,4 @@ public interface UserRepository /*extends JpaRepository<User, Integer> */{
     void save(User user);
     void delete(Integer id);
     void addRole(User user);
-//    void addRole(Role role);
-//    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }
