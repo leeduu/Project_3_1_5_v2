@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +16,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "username")
 //    @NotBlank(message = "Username should not be empty")
@@ -33,18 +35,19 @@ public class User implements UserDetails {
 
     public User(){}
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"/*, referencedColumnName = "id"*/),
             inverseJoinColumns = @JoinColumn(name = "role_id"/*, referencedColumnName = "id"*/))
 //    @NotEmpty(message = "At least one role must be checked")
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -105,7 +108,7 @@ public class User implements UserDetails {
         return getRoles();
     }
 
-    public User(Integer id, String username, String password, String email, Set<Role> roles) {
+    public User(Long id, String username, String password, String email, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;

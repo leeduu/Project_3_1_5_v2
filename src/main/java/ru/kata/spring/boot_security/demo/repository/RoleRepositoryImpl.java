@@ -20,7 +20,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
-    public Role findRole(Integer id) {
+    public Role findRole(Long id) {
         return entityManager.find(Role.class, id);
     }
 

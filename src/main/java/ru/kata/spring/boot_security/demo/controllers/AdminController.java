@@ -30,7 +30,7 @@ public class AdminController {
     }
 
     @GetMapping("/{id}/update") //форма апдейта юзера
-    public String updateUser(Model model, @PathVariable("id") Integer id) {
+    public String updateUser(Model model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.findUser(id));
         model.addAttribute("rolesList", roleService.getRolesList());
         return "update";
@@ -39,10 +39,10 @@ public class AdminController {
     @PostMapping("/{id}/update") // апдейт юзера и показ всех юзеров
     public String update(@Valid @ModelAttribute("user") User user,
                          @RequestParam(name = "checkboxes", defaultValue = "1") String[] checkboxes,
-                         @PathVariable("id") Integer id) {
+                         @PathVariable("id") Long id) {
         Set<Role> newRoles = new HashSet<>();
         for (String role : checkboxes) {
-            Integer roleId = Integer.valueOf(role);
+            Long roleId = Long.valueOf(role);
             newRoles.add(roleService.findRole(roleId));
         }
         user.setRoles(newRoles);
@@ -62,23 +62,22 @@ public class AdminController {
                         @RequestParam(name = "checkboxes", defaultValue = "1") String[] checkboxes) {
         Set<Role> newRoles = new HashSet<>();
         for (String role : checkboxes) {
-            Integer roleId = Integer.valueOf(role);
+            Long roleId = Long.valueOf(role);
             newRoles.add(roleService.findRole(roleId));
         }
         user.setRoles(newRoles);
-System.out.println(user);
         userService.save(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/{id}")   //показывает детали одного юзера
-    public String showUser(Model model, @PathVariable("id") Integer id) {
+    public String showUser(Model model, @PathVariable("id") Long id) {
         model.addAttribute("delete", userService.findUser(id));
         return "delete";
     }
 
     @DeleteMapping("/{id}/delete")    //удаление юзера
-    public String deleteUser(@PathVariable("id") Integer id) {
+    public String deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
         return "redirect:/admin";
     }

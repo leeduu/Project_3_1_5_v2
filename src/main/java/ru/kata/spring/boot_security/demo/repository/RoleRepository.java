@@ -7,7 +7,7 @@ import java.util.List;
 public interface RoleRepository {
     List<Role> getRolesList();
     Role findRoleByName(String name);
-    Role findRole(Integer id);
+    Role findRole(Long id);
     void editRole(Role role);
     void deleteRole(Role role);
 }
