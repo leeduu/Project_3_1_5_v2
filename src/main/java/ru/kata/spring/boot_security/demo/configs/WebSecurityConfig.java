@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//            .csrf().disable()
+            .csrf().disable()
             .authorizeRequests()
             .antMatchers("/", "/index", "/login").permitAll()
             .antMatchers("/admin/**").hasRole("ADMIN")
@@ -49,12 +49,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(detailsService).passwordEncoder(passwordEncoder());
     }
-
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {  // существует ли юзер...
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setPasswordEncoder(passwordEncoder());
-//        authenticationProvider.setUserDetailsService(customUserDetailsService);  // ...если да - положить в Spring Security Context
-//        return authenticationProvider;
-//    }
 }
