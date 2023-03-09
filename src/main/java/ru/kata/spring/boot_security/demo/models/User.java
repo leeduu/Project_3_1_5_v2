@@ -19,18 +19,12 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "username")
-//    @NotBlank(message = "Username should not be empty")
-//    @Size(min = 2, max = 30, message = "Username length should be 2-30 characters")
     private String username;
 
     @Column(name = "password")
-//    @NotBlank(message = "Password should not be empty")
-//    @Size(min = 8, message = "Password length should be not less than 8 characters")
     private String password;
 
     @Column(name = "email")
-//    @NotBlank(message = "Email should not be empty")
-//    @Email(message = "Email should look like name@gmail.com")
     private String email;
 
     public User(){}
@@ -38,9 +32,8 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"/*, referencedColumnName = "id"*/),
-            inverseJoinColumns = @JoinColumn(name = "role_id"/*, referencedColumnName = "id"*/))
-//    @NotEmpty(message = "At least one role must be checked")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
     public Long getId() {
