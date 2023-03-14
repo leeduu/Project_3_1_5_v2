@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.kata.spring.boot_security.demo.services.DetailsService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
@@ -31,19 +32,46 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//            .csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/", "/index", "/login").permitAll()
-            .antMatchers("/admin/**").hasRole("ADMIN")
-            .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-            .anyRequest().authenticated()
-            .and()
-            .formLogin().successHandler(successUserHandler)
-            .permitAll()
-            .and()
-            .logout()
-            .permitAll();
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/", "/index", "/login").permitAll()
+                .antMatchers("/admin/**").permitAll()//.hasRole("ADMIN")
+                .antMatchers("/user/**").permitAll()//.hasAnyRole("USER", "ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().usernameParameter("email")
+                .successHandler(successUserHandler)
+                .permitAll()
+                .and()
+                .logout().logoutSuccessUrl("/login")
+                .permitAll();
     }
+
+
+
+
+
+
+//                .formLogin()
+//                .loginPage("/login")
+//                .successHandler(successUserHandler)
+////                .loginProcessingUrl("/login_process")
+//                .usernameParameter("email")
+//                .passwordParameter("password")
+//                .permitAll();
+//        http.logout()
+//                .permitAll()
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .logoutSuccessUrl("/")
+//                .and().csrf().disable();
+//        http.authorizeRequests()
+//                .antMatchers("/", "/?error").permitAll()
+//                .antMatchers("/admin/**").permitAll()//.hasRole("ADMIN")
+//                .antMatchers("/user/**").permitAll()//.hasAnyRole("USER", "ADMIN")
+//                .anyRequest().authenticated()
+//                .and()
+//                .csrf().disable();
+//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -22,8 +22,8 @@ public class DetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsername(username);    // создаем пользователя, которого ищем в базе по юзернейму
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findUserByEmail(email);    // создаем пользователя, которого ищем в базе по юзернейму
         if (user == null) {
             throw new UsernameNotFoundException("Not found");
         }
@@ -32,6 +32,6 @@ public class DetailsService implements UserDetailsService {
         for (Role role: user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())); // находим все роли пользователя и отправляем в разрешения
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
     }
 }

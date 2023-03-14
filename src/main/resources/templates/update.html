@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Update User</title>
 <body>
@@ -11,29 +13,31 @@
     <p><a href="/logout" class="btn btn-outline-secondary btn-sm">Logout</a></p>
 </div>
 <div align="center">
-    <form th:method="POST" th:action="@{/admin/{id}/update(id=${user.getId()})}" th:object="${user}">
-        <label for="username">Username</label>
-        <input type="text" class="form-control form-control-sm" placeholder="2-30 characters" style="max-width: 400px; margin: 0 auto"
+    <form th:method="POST" th:object="${user}">
+        <label for="id"><strong>ID</strong></label>
+        <input type="text" class="form-control form-control-sm" placeholder="2-30 characters" style="max-width: 200px; margin: 0 auto"
+               th:field="*{id}" id="id" disabled/>
+        <br>
+        <label for="username"><strong>Username</strong></label>
+        <input type="text" class="form-control form-control-sm" placeholder="2-30 characters" style="max-width: 200px; margin: 0 auto"
                th:field="*{username}" id="username"/>
         <br>
-        <br>
-        <label for="password">Password</label>
-        <input type="text" class="form-control form-control-sm" placeholder="Min 8 characters" style="max-width: 400px; margin: 0 auto"
+        <label for="password"><strong>Password</strong></label>
+        <input type="text" class="form-control form-control-sm" placeholder="Min 8 characters" style="max-width: 200px; margin: 0 auto"
                th:field="*{password}" id="password"/>
         <br>
-        <br>
-        <label for="email">Email</label>
-        <input type="text" class="form-control form-control-sm" placeholder="Example: name@gmail.com" style="max-width: 400px; margin: 0 auto"
+        <label for="email"><strong>Email</strong></label>
+        <input type="text" class="form-control form-control-sm" placeholder="Example: name@gmail.com" style="max-width: 200px; margin: 0 auto"
                th:field="*{email}" id="email"/>
         <br>
-        <br>
-        <label>Role:</label>
-        <input type="checkbox" th:name="checkboxes"
-               th:each="role : ${rolesList}"
-               th:text="${role.name.toString()}"
-               th:value="${role.id}"
-        />
-        <br>
+        <label class="col-sm-2 col-form-label"><strong>Role:</strong></label>
+        <select th:name="checkboxes"
+                th:field="*{roles}">
+            <option th:each="role : ${rolesList}"
+                    th:text="${role.name}"
+                    th:value="${role.id}">
+            </option>
+        </select>
         <br>
         <input type="submit" class="btn btn-outline-primary" value="Update user"/>
     </form>

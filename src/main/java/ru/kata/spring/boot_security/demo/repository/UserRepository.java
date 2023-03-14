@@ -7,6 +7,7 @@ import java.util.List;
 public interface UserRepository {
     User findUser(Long id);
     User findUserByUsername(String username);
+    User findUserByEmail(String email);
     List<User> showAllUsers();
     void update(Long id, User user);
     void save(User user);

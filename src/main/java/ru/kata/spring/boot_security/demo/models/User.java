@@ -118,12 +118,6 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", roles=" + roles +
-                '}';
+        return Arrays.toString(roles.toArray()).replace("ROLE_", "").replace("[", "").replace("]", "");
     }
 }

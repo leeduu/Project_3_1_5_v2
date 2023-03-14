@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
     <title>Spring Security Example</title>
 </head>
 <body>
@@ -12,12 +14,12 @@
 </div>
 <br>
 <div align="center">
-<b><strong>Do you want to delete profile:</strong></b>
-<br>
-<br>
-<p th:text="'Username: '+${delete.getUsername()}">VALUE</p>
-<p th:text="'Email: '+${delete.getEmail()}">VALUE</p>
-<p th:text="'Roles: '+${delete.getRoles()}">VALUE</p>
+    <b><strong>Do you want to delete profile:</strong></b>
+    <br>
+    <br>
+    <p th:text="'Username: '+${delete.getUsername()}">VALUE</p>
+    <p th:text="'Email: '+${delete.getEmail()}">VALUE</p>
+    <p th:text="'Roles: '+${delete.getRoles()}">VALUE</p>
     <br>
     <form th:method="DELETE" th:action="@{/admin/{id}/delete(id=${delete.getId()})}">
         <input type="submit" class="btn btn-outline-primary" value="Delete"/>
