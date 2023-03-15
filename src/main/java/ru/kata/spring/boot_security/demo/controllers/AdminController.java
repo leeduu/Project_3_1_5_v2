@@ -37,24 +37,25 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping("/{id}") //форма апдейта юзера
-    public String updateUser(Model model, @RequestParam(name = "id") Long id) {
+    @GetMapping("/edit/{editId}") //форма апдейта юзера
+    public String updateUser(Model model, @RequestParam(name = "editId") Long id) {
         model.addAttribute("user", userService.findUser(id));
         model.addAttribute("rolesList", roleService.getRolesList());
         return "update";
     }
 
-    @PostMapping("/{id}") // апдейт юзера и показ всех юзеров
-    public String update(@Valid @ModelAttribute("user") User user,
-                         @RequestParam(name = "rolesList", defaultValue = "1") String[] rolesList,
-                         @PathVariable("id") Long id) {
+    @PatchMapping("/edit/{editId}") // апдейт юзера и показ всех юзеров
+    public String update(/*@ModelAttribute("user") User user,*/
+                         @RequestParam(name = "rolesList", defaultValue = "1") String[] roles,
+                         @PathVariable("editId") Long id) {
         Set<Role> newRoles = new HashSet<>();
-        for (String role : rolesList) {
+        for (String role : roles) {
             Long roleId = Long.valueOf(role);
             newRoles.add(roleService.findRole(roleId));
         }
+        User user = userService.findUser(id);
         user.setRoles(newRoles);
-        userService.update(id, user);
+        userService.update(user);
         return "redirect:/admin";
     }
 
@@ -77,8 +78,8 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/{id}")    //удаление юзера
-    public String deleteUser(@PathVariable("id") Long id) {
+    @DeleteMapping("/delete/{deleteId}")    //удаление юзера
+    public String deleteUser(@PathVariable("deleteId") Long id) {
         userService.delete(id);
         return "redirect:/admin";
     }

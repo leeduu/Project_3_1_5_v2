@@ -41,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void update(Long id, User user) {
+    public void update(User user) {
         for (Role role : user.getRoles()) {
             entityManager.merge(role);
         }

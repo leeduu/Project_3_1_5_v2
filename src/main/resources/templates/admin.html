@@ -130,7 +130,7 @@
                                                             <div class="modal fade" th:id="${'editModal'+user.id}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                                                                 <div class="modal-dialog">
                                                                     <div class="modal-content">
-                                                                        <form th:method="PATCH" th:action="@{/admin/{id}(id=${user.getId()})}" th:object="${user}">
+                                                                        <form th:method="PATCH" th:action="@{/admin/edit/{editId}(editId=${user.getId()})}" th:object="${user}">
                                                                         <!-- Modal Header -->
                                                                         <div class="modal-header">
                                                                             <h4 class="modal-title" id="editModalLabel">Edit user</h4>
@@ -144,7 +144,7 @@
 <!--                                                                                                                        -->
                                                                                     <label><strong>ID</strong></label>
                                                                                     <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
-                                                                                           th:value="${user.id}" th:name="id" disabled/>
+                                                                                           th:value="${user.id}" th:name="editId" disabled/>
                                                                                     <br>
                                                                                     <label><strong>Username</strong></label>
                                                                                     <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
@@ -160,7 +160,7 @@
                                                                                     <br>
                                                                                     <label class="col-sm-2 col-form-label"><strong>Role</strong></label>
                                                                                     <select class="form-select" size="2" multiple aria-label="multiple select"
-                                                                                            th:name="roles"
+                                                                                            th:name="rolesList"
                                                                                             style="max-width: 200px; margin: 0 auto">
                                                                                         <option th:each="role : ${rolesList}"
                                                                                                 th:text="${role.name.toString().replaceAll('ROLE_', '')}"
@@ -170,12 +170,13 @@
                                                                                 </div>
                                                                                 </div>
                                                                         </div>
-                                                                        </form>
+
                                                                         <!-- Modal footer -->
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                                             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Edit</button>
                                                                         </div>
+                                                                        </form>
                                                                     </div>
                                                                 </div>
 
@@ -199,10 +200,10 @@
                                                                         <!-- Modal body  -->            <!-- Юзер не удаляется  -->
                                                                         <div class="modal-body">
                                                                             <div align="center">
-                                                                                <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.id})}" th:object="${user}">
+                                                                                <form th:method="DELETE" th:action="@{/admin/delete/{deleteId}(deleteId=${user.id})}" th:object="${user}">
                                                                                     <label><strong>ID</strong></label>
                                                                                     <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
-                                                                                           th:value="${user.id}" th:name="id" disabled/>
+                                                                                           th:value="${user.id}" th:name="deleteId" disabled/>
                                                                                     <br>
                                                                                     <label><strong>Username</strong></label>
                                                                                     <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
@@ -225,13 +226,14 @@
                                                                                                 th:value="${role.id}">
                                                                                         </option>
                                                                                     </select>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
+
                                                                         <!-- Modal footer -->
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                                             <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                                                                        </div>
+                                                                        </form>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
