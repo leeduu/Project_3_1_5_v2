@@ -66,7 +66,6 @@ public class AdminController {
         return "new";
     }
 
-
     @PostMapping("/new")    // сохранение нового юзера и показ всех юзеров                                  DONE
     public String newUser(@ModelAttribute("user") User user,
                           @RequestParam(name = "role", defaultValue = "1") String role) {
