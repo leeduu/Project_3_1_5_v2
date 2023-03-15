@@ -44,7 +44,7 @@ public class AdminController {
         return "update";
     }
 
-    @PatchMapping("/edit/{editId}") // апдейт юзера и показ всех юзеров
+    @PatchMapping("/edit/{editId}") // апдейт юзера и показ всех юзеров   || ModelAttribute не нужен в update
     public String update(/*@ModelAttribute("user") User user,*/
                          @RequestParam(name = "rolesList", defaultValue = "1") String[] roles,
                          @PathVariable("editId") Long id) {
@@ -78,7 +78,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/delete/{deleteId}")    //удаление юзера
+    @DeleteMapping("/delete/{deleteId}")    //удаление юзера || В delete лучше RequestParam
     public String deleteUser(@PathVariable("deleteId") Long id) {
         userService.delete(id);
         return "redirect:/admin";
