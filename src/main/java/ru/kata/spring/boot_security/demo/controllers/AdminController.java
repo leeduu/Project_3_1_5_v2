@@ -45,15 +45,18 @@ public class AdminController {
     }
 
     @PatchMapping("/edit/{editId}") // апдейт юзера и показ всех юзеров   || ModelAttribute не нужен в update
-    public String update(/*@ModelAttribute("user") User user,*/
-                         @RequestParam(name = "rolesList", defaultValue = "1") String[] roles,
+    public String update(//@ModelAttribute("user") User user,
+                         @RequestParam(name = "rolesList", defaultValue = "1") String role,
+                         @RequestParam(name = "username") String username,
+                         @RequestParam(name = "email") String email,
+                         @RequestParam(name = "password") String password,
                          @PathVariable("editId") Long id) {
         Set<Role> newRoles = new HashSet<>();
-        for (String role : roles) {
-            Long roleId = Long.valueOf(role);
-            newRoles.add(roleService.findRole(roleId));
-        }
+        newRoles.add(roleService.findRole(Long.valueOf(role)));
         User user = userService.findUser(id);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
         user.setRoles(newRoles);
         userService.update(user);
         return "redirect:/admin";

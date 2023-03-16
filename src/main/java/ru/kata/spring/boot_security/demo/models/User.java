@@ -109,6 +109,13 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public User(String username, String password, String email, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return Arrays.toString(roles.toArray()).replace("ROLE_", "").replace("[", "").replace("]", "");

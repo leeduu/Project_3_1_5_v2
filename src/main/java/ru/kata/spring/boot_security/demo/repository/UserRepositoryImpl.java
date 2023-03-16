@@ -28,10 +28,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findUserByEmail(String email) {
-        System.out.println(email);
         User user = entityManager.createQuery("from User where email = :email", User.class)
                 .setParameter("email", email).getSingleResult();
-        System.out.println(user);
         return user;
     }
 

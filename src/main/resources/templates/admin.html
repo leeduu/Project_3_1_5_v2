@@ -130,7 +130,6 @@
                                                             <div class="modal fade" th:id="${'editModal'+user.id}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                                                                 <div class="modal-dialog">
                                                                     <div class="modal-content">
-                                                                        <form th:method="PATCH" th:action="@{/admin/edit/{editId}(editId=${user.getId()})}" th:object="${user}">
                                                                         <!-- Modal Header -->
                                                                         <div class="modal-header">
                                                                             <h4 class="modal-title" id="editModalLabel">Edit user</h4>
@@ -138,13 +137,12 @@
                                                                         </div>
                                                                         <!-- Modal body -->
                                                                         <div class="modal-body text-center">
-                                                                            <div class="form-group required">
-                                                                                <div class="controls">
-
-<!--                                                                                                                        -->
+<!--                                                                            <div class="form-group required">-->
+<!--                                                                                <div class="controls">-->
+                                                                                    <form th:method="PATCH" th:action="@{/admin/edit/{id}(id=${user.getId()})}" th:object="${user}">
                                                                                     <label><strong>ID</strong></label>
                                                                                     <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
-                                                                                           th:value="${user.id}" th:name="editId" disabled/>
+                                                                                           th:value="${user.id}" th:name="id" disabled/>
                                                                                     <br>
                                                                                     <label><strong>Username</strong></label>
                                                                                     <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
@@ -167,16 +165,15 @@
                                                                                                 th:value="${role.id}">
                                                                                         </option>
                                                                                     </select>
-                                                                                </div>
-                                                                                </div>
-                                                                        </div>
-
                                                                         <!-- Modal footer -->
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                                             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Edit</button>
                                                                         </div>
                                                                         </form>
+<!--                                                                                </div>-->
+<!--                                                                            </div>-->
+                                                                        </div>
                                                                     </div>
                                                                 </div>
 
