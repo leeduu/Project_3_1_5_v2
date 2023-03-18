@@ -35,50 +35,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
             .anyRequest().authenticated()
             .and()
-            .formLogin().usernameParameter("email")
-            .successHandler(successUserHandler)
+            .formLogin().successHandler(successUserHandler)
+            .usernameParameter("j_email").passwordParameter("j_password")
+            .loginPage("/login")
             .permitAll()
             .and()
             .logout().logoutSuccessUrl("/login")
             .permitAll();
     }
 
-
-
-
-
-
-//                .formLogin()
-//                .loginPage("/login")
-//                .successHandler(successUserHandler)
-////                .loginProcessingUrl("/login_process")
-//                .usernameParameter("email")
-//                .passwordParameter("password")
-//                .permitAll();
-//        http.logout()
-//                .permitAll()
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessUrl("/")
-//                .and().csrf().disable();
-//        http.authorizeRequests()
-//                .antMatchers("/", "/?error").permitAll()
-//                .antMatchers("/admin/**").permitAll()//.hasRole("ADMIN")
-//                .antMatchers("/user/**").permitAll()//.hasAnyRole("USER", "ADMIN")
-//                .anyRequest().authenticated()
-//                .and()
-//                .csrf().disable();
-//    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
-
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {  // существует ли юзер...
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setPasswordEncoder(passwordEncoder());
-//        authenticationProvider.setUserDetailsService(customUserDetailsService);  // ...если да - положить в Spring Security Context
-//        return authenticationProvider;
-//    }
 }

@@ -38,7 +38,7 @@ public class AdminController {
     }
 
     @GetMapping("/edit/{editId}") //форма апдейта юзера
-    public String updateUser(Model model, @RequestParam(name = "editId") Long id) {
+    public String updateUser(Model model, @PathVariable("editId") Long id) {
         model.addAttribute("user", userService.findUser(id));
         model.addAttribute("rolesList", roleService.getRolesList());
         return "update";
@@ -48,12 +48,12 @@ public class AdminController {
     public String update(//@ModelAttribute("user") User user,
                          @RequestParam(name = "rolesList", defaultValue = "1") String role,
                          @RequestParam(name = "username") String username,
-                         @RequestParam(name = "email") String email,
                          @RequestParam(name = "password") String password,
-                         @PathVariable("editId") Long id) {
+                         @RequestParam(name = "email") String email,
+                         @PathVariable("editId") String id) {
         Set<Role> newRoles = new HashSet<>();
         newRoles.add(roleService.findRole(Long.valueOf(role)));
-        User user = userService.findUser(id);
+        User user = userService.findUser(Long.valueOf(id));
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(password);

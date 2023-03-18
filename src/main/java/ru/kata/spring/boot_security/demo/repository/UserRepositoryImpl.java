@@ -53,7 +53,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void delete(Long id) {
-        User user = findUser(id);
         entityManager.remove(findUser(id));
     }
 
