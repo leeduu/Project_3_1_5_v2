@@ -37,7 +37,13 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
         User testUser = new User("test1", "test1", "test1@mail.ru", userRoles);
         User testAdmin = new User("tester", "tester", "tester@bk.ru", adminRoles);
-        userService.update(testUser);
-        userService.update(testAdmin);
+        try {
+            userService.update(testUser);
+            } catch (Exception e) {
+            }
+        try {
+            userService.update(testAdmin);
+            } catch (Exception e) {
+            }
     }
 }

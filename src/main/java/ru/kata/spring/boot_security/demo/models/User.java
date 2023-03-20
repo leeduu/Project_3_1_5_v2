@@ -32,7 +32,7 @@ public class User implements UserDetails {
     /*  Когда аннотация @Fetch не добавлена, в Hibernate Criteria запросах по умолчанию используется FetchMode.JOIN
         для связанных коллекций с типом загрузки EAGER и FetchMode.SELECT для связанных коллекций с типом загрузки LAZY.    */
     @ManyToMany(fetch = FetchType.LAZY)
-//    @Fetch(FetchMode.JOIN)
+    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
