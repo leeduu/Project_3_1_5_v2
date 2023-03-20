@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.repository;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 
 import javax.persistence.EntityManager;
@@ -26,7 +25,6 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
-    @Transactional
     public void saveRole(Role role) {
         entityManager.merge(role);
     }

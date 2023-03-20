@@ -1,9 +1,5 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +7,6 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
-
-import javax.validation.Valid;
 
 import java.security.Principal;
 import java.util.*;
@@ -29,7 +23,7 @@ public class AdminController {
     }
 
     @GetMapping
-    public String showAllUsers(Principal principal, Model model) {   // Показ всех юзеров                          DONE
+    public String showAllUsers(Principal principal, Model model) {   // Показ всех юзеров
         model.addAttribute("showAllUsers", userService.showAllUsers());
         model.addAttribute("rolesList", roleService.getRolesList());
         User user = userService.findUserByEmail(principal.getName());
@@ -44,9 +38,8 @@ public class AdminController {
         return "update";
     }
 
-    @PatchMapping("/edit/{editId}") // апдейт юзера и показ всех юзеров   || ModelAttribute не нужен в update
-    public String update(//@ModelAttribute("user") User user,
-                         @RequestParam(name = "rolesList", defaultValue = "1") String role,
+    @PatchMapping("/edit/{editId}") // апдейт юзера и показ всех юзеров
+    public String update(@RequestParam(name = "rolesList", defaultValue = "1") String role,
                          @RequestParam(name = "username") String username,
                          @RequestParam(name = "password") String password,
                          @RequestParam(name = "email") String email,
@@ -56,20 +49,24 @@ public class AdminController {
         User user = userService.findUser(Long.valueOf(id));
         user.setUsername(username);
         user.setEmail(email);
-        user.setPassword(password);
         user.setRoles(newRoles);
+        System.out.println(password.equals(user.getPassword()));
+        if (!password.equals(user.getPassword())) {
+            System.out.println(password);
+            user.setPassword(password);
+        }
         userService.update(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/new") // форма создания нового юзера                                                      DONE
+    @GetMapping("/new") // форма создания нового юзера
     public String newUserForm(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("rolesList", roleService.getRolesList());
         return "new";
     }
 
-    @PostMapping("/new")    // сохранение нового юзера и показ всех юзеров                                  DONE
+    @PostMapping("/new")    // сохранение нового юзера и показ всех юзеров
     public String newUser(@ModelAttribute("user") User user,
                           @RequestParam(name = "role", defaultValue = "1") String role) {
         Set<Role> newRoles = new HashSet<>();
