@@ -50,9 +50,7 @@ public class AdminController {
         user.setUsername(username);
         user.setEmail(email);
         user.setRoles(newRoles);
-        System.out.println(password.equals(user.getPassword()));
         if (!password.equals(user.getPassword())) {
-            System.out.println(password);
             user.setPassword(password);
         }
         userService.update(user);
