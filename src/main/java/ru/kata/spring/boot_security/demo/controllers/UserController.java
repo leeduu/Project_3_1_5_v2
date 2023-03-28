@@ -11,10 +11,10 @@ import java.security.Principal;
 @Controller
 public class UserController {
 
-    private final UserService userService;
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+//    private final UserService userService;
+//    public UserController(UserService userService) {
+//        this.userService = userService;
+//    }
 
     @GetMapping("/")
     public String redirectToLoginPage() {
@@ -28,8 +28,8 @@ public class UserController {
 
     @GetMapping("/user")
     public String showUserProfile(Model model, Principal principal) {
-        User user = userService.findUserByEmail(principal.getName());
-        model.addAttribute("showMyInfo", user);
+//        User user = userService.findUserByEmail(principal.getName());
+//        model.addAttribute("showMyInfo", user);
         return "user";
     }
 

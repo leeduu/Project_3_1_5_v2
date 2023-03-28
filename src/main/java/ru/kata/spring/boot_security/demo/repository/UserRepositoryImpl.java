@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.repository;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
@@ -31,6 +33,12 @@ public class UserRepositoryImpl implements UserRepository {
         User user = entityManager.createQuery("from User where email = :email", User.class)
                 .setParameter("email", email).getSingleResult();
         return user;
+    }
+
+    @Override
+    public User getAuthUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return findUserByUsername(auth.getName());
     }
 
     @Override
