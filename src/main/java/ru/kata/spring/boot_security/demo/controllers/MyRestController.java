@@ -58,10 +58,8 @@ public class MyRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/user")   // данные пользователя
+    @GetMapping("/user")   // данные пользователя                               // белая страница
     public ResponseEntity<User> getUser(@AuthenticationPrincipal User user) {
-//        User user = userService.findUserByEmail(principal.getName());
-//        model.addAttribute("showMyInfo", user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
