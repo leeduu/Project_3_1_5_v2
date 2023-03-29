@@ -1,10 +1,8 @@
 fetch('/api/users')
     .then(response => response.json())
     .then(data => {
-        // assuming data is an array of user objects
         const table = document.querySelector('#allUsersTableBody');
 
-        // create table rows
         data.forEach(user => {
             const row = table.insertRow();
             row.innerHTML = `
@@ -21,7 +19,6 @@ fetch('/api/users')
             `;
         });
 
-        // add table to DOM
         document.body.appendChild(row);
     })
     .catch(error => console.error(error));
