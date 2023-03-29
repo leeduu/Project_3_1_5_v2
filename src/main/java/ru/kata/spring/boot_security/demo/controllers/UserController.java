@@ -26,11 +26,11 @@ public class UserController {
         return "login_page";
     }
 
-    @GetMapping("/user")
-    public String showUserProfile(Model model, Principal principal) {
+//    @GetMapping("/user")
+//    public String showUserProfile(Model model, Principal principal) {
 //        User user = userService.findUserByEmail(principal.getName());
 //        model.addAttribute("showMyInfo", user);
-        return "user";
-    }
+//        return "user";
+//    }
 
 }

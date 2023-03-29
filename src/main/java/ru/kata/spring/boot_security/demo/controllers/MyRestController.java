@@ -2,14 +2,18 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-//@CrossOrigin
+@CrossOrigin
 @RequestMapping("/api")
 public class MyRestController {
 
@@ -18,6 +22,13 @@ public class MyRestController {
     public MyRestController(UserService userService) {
         this.userService = userService;
     }
+
+//    @GetMapping("/users")   // показ всех юзеров
+//    public List<User> showAllUsers() {
+//        List<User> usersList = new ArrayList<>();
+//        userService.showAllUsers().forEach(usersList::add);
+//        return usersList;
+//    }
 
     @GetMapping("/users")   // показ всех юзеров
     public ResponseEntity<List<User>> showAllUsers() {
@@ -48,7 +59,9 @@ public class MyRestController {
     }
 
     @GetMapping("/user")   // данные пользователя
-    public ResponseEntity<User> getUser() {
-        return new ResponseEntity<>(userService.getAuthUser(), HttpStatus.OK);
+    public ResponseEntity<User> getUser(@AuthenticationPrincipal User user) {
+//        User user = userService.findUserByEmail(principal.getName());
+//        model.addAttribute("showMyInfo", user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

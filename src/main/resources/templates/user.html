@@ -4,6 +4,7 @@
       xmlns:text-decoration="http://www.w3.org/1999/xhtml" xmlns:max-width="http://www.w3.org/1999/xhtml"
       xmlns:margin="http://www.w3.org/1999/xhtml" xmlns:color="http://www.w3.org/1999/xhtml">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -96,13 +97,12 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="userProfileTable">
-<!--                                                <script src="userProfile.js"></script>-->
-<!--                                                <tr>-->
-<!--                                                    <td th:text="${showMyInfo.getId()}"/>-->
-<!--                                                    <td th:text="${showMyInfo.getUsername()}"/>-->
-<!--                                                    <td th:text="${showMyInfo.getEmail()}"/>-->
-<!--                                                    <td th:text="${showMyInfo.getRoles()}"/>-->
-<!--                                                </tr>-->
+                                                <tr>
+                                                    <td th:text="${showMyInfo.getId()}"/>
+                                                    <td th:text="${showMyInfo.getUsername()}"/>
+                                                    <td th:text="${showMyInfo.getEmail()}"/>
+                                                    <td th:text="${showMyInfo.getRoles()}"/>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
