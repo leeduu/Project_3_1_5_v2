@@ -1,29 +1,41 @@
-fetch('/api/users')
-    .then(response => response.json())
-    .then(data => {
-        const table = document.querySelector('#allUsersTableBody');
-
-        data.forEach(user => {
-            const row = table.insertRow();
-            row.innerHTML = `
-            <td>${user.id}</td>
-            <td>${user.username}</td>
-            <td>${user.email}</td>
-            <td>${user.role}</td>
-            <td>
-              <button class="btn btn-primary">Edit</button>
-            </td>
-            <td>
-              <button class="btn btn-danger">Delete</button>
-            </td>
-            `;
-        });
-
-        document.body.appendChild(row);
-    })
-    .catch(error => console.error(error));
+    console.log("Test")
 
 
+
+
+
+
+
+
+
+
+
+// fetch('/api/users')
+//     .then(response => response.json())
+//     .then(data => {
+//         const table = document.querySelector('#allUsersTableBody');
+//
+//         data.forEach(user => {
+//             const row = table.insertRow();
+//             row.innerHTML = `
+//             <td>${user.id}</td>
+//             <td>${user.username}</td>
+//             <td>${user.email}</td>
+//             <td>${user.role}</td>
+//             <td>
+//               <button class="btn btn-primary">Edit</button>
+//             </td>
+//             <td>
+//               <button class="btn btn-danger">Delete</button>
+//             </td>
+//             `;
+//         });
+//
+//         document.body.appendChild(row);
+//     })
+//     .catch(error => console.error(error));
+
+// ===============================================================
 
 // const URL = 'http://localhost:8080/api/users';
 // let result = '';
