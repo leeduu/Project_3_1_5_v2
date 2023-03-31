@@ -26,6 +26,11 @@ public class UserController {
         return "login_page";
     }
 
+    @GetMapping("/user")
+    public String userPage() {
+        return "user";
+    }
+
 //    @GetMapping("/user")
 //    public String showUserProfile(Model model, Principal principal) {
 //        User user = userService.findUserByEmail(principal.getName());

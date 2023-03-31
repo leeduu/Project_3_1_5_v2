@@ -1,8 +1,17 @@
-    console.log("Test")
+let username = "test_username"; // глобальная переменная
+const header = document.querySelector("#navigationPanel");
+const usersTable = document.querySelector("#allUsersTable");
 
+function authUser() {
+    console.log("EMAIL" + " " + "with roles " + "ROLES");
+}
 
+window.addEventListener("click", function() {
+    
+});
 
-
+console.log(header);
+authUser();
 
 
 
