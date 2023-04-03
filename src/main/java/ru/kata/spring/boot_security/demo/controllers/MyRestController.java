@@ -3,13 +3,12 @@ package ru.kata.spring.boot_security.demo.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,9 +17,11 @@ import java.util.List;
 public class MyRestController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
-    public MyRestController(UserService userService) {
+    public MyRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
 //    @GetMapping("/users")   // показ всех юзеров
@@ -46,8 +47,8 @@ public class MyRestController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
-    @PutMapping("/users")   // апдейт юзера
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
+    @PatchMapping("/users/edit/{id}")   // апдейт юзера
+    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Long id) {
         userService.update(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -58,8 +59,13 @@ public class MyRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/user")   // данные пользователя                               // белая страница
+    @GetMapping("/user")   // данные пользователя                               // белый экран
     public ResponseEntity<User> getUser(@AuthenticationPrincipal User user) {
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/roles")   // данные пользователя
+    public ResponseEntity<List<Role>> showAllRoles() {
+        return new ResponseEntity<>(roleService.getRolesList(), HttpStatus.OK);
     }
 }

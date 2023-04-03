@@ -1,78 +1,64 @@
-let username = "test_username"; // глобальная переменная
-const header = document.querySelector("#navigationPanel");
-const usersTable = document.querySelector("#allUsersTable");
 
-function authUser() {
-    console.log("EMAIL" + " " + "with roles " + "ROLES");
-}
+// Вывод всех юзеров в таблицу
+// $(async function() {
+//     await allUsers();
+// });
+fetch("http://localhost:8080/api/users")
+    .then(function(response) {  // to do sth with server response
+        return response.json();
+    })
+    .then(function(users) {
+        let placeholder = document.querySelector("#allUsersTableBody"); // access to the table body element
+        let out = "";
+        for (let user of users) {
+                out += `
+            <tr>
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.email}</td>
+                <td>${user.authorities.map(role => role.name).toString().replaceAll("ROLE_", "").replaceAll(",", ", ")}<td>
+                <button type="button" id="editUserButton" class="btn btn-info" data-bs-toggle="modal"
+                    th:data-bs-target="${'#editUserModal' + user.id}" onclick="editUserModal">
+                    Edit</button>
+                </td>
+                <td><button type="button" id="deleteUserButton" class="btn btn-danger" data-bs-toggle="modal"
+                     th:data-bs-target="${'#deleteUserModal' + user.id}">
+                     Delete</button>
+                </td>
+            </tr>
+        `;
+        }
+        placeholder.innerHTML = out;
+    })
 
-window.addEventListener("click", function() {
-    
-});
+// Информация об авторизованном юзере
+fetch("http://localhost:8080/api/user")
+    .then(function(response) {  // to do sth with server response
+        return response.json();
+    })
+    .then(function(user) {
+        let placeholder = document.querySelector("#authUserRoles"); // access to the table body element
+        let out = "";
+        // for (let user of user) {
+            out += `
+            <a ${user.email}></a>
+        `;
+        // }
+        placeholder.innerHTML = out;
+    })
 
-console.log(header);
-authUser();
+// Модальное окно Edit user
+// const form = document.getElementById("editUserModal");
+// function retrieveFormValue(event) {
+//     event.preventDefault();
+//     const {username, password, email, roles} = form;
+//     const values = {
+//         username: username.value,
+//         password: password.value,
+//         email: email.value,
+//         roles: roles.name,
+//     };
+// }
+// form.addEventListener("submit", retrieveFormValue);
 
 
-
-
-
-
-
-// fetch('/api/users')
-//     .then(response => response.json())
-//     .then(data => {
-//         const table = document.querySelector('#allUsersTableBody');
-//
-//         data.forEach(user => {
-//             const row = table.insertRow();
-//             row.innerHTML = `
-//             <td>${user.id}</td>
-//             <td>${user.username}</td>
-//             <td>${user.email}</td>
-//             <td>${user.role}</td>
-//             <td>
-//               <button class="btn btn-primary">Edit</button>
-//             </td>
-//             <td>
-//               <button class="btn btn-danger">Delete</button>
-//             </td>
-//             `;
-//         });
-//
-//         document.body.appendChild(row);
-//     })
-//     .catch(error => console.error(error));
-
-// ===============================================================
-
-// const URL = 'http://localhost:8080/api/users';
-// let result = '';
-//
-// const show = (allUsers) => {
-//     const container = document.getElementById("allUsersTableBody");
-//     const users = Array.from(allUsers);
-//     users.forEach(user => {
-//         result += `<tr>
-//         <td>${user.id}</td>
-//         <td>${user.username}</td>
-//         <td>${user.email}</td>
-//         <td>${user.role.toString()}</td>
-//         <td>
-//             <button type="button" class="btn btn-info" data-bs-toggle="modal" th:data-bs-target="${'#editModal'+user.id}">
-//             Edit</button>
-//         </td>
-//         <td>
-//             <button type="button" class="btn btn-danger" data-bs-toggle="modal"th:data-bs-target="${'#deleteModal'+user.id}">-->
-//             Delete</button>
-//         </td>
-//  </tr>`
-//     });
-//     container.innerHTML = result;
-// };
-//
-// fetch(URL, {headers: {'Content-type': 'application/json'},}
-// )
-//     .then(response => response.json())
-//     .then(data => show(data));
-//
