@@ -1,8 +1,5 @@
 
 // Вывод всех юзеров в таблицу
-// $(async function() {
-//     await allUsers();
-// });
 fetch("http://localhost:8080/api/users")
     .then(function(response) {  // to do sth with server response
         return response.json();
@@ -32,33 +29,28 @@ fetch("http://localhost:8080/api/users")
     })
 
 // Информация об авторизованном юзере
-fetch("http://localhost:8080/api/user")
-    .then(function(response) {  // to do sth with server response
-        return response.json();
-    })
-    .then(function(user) {
-        let placeholder = document.querySelector("#authUserRoles"); // access to the table body element
-        let out = "";
-        // for (let user of user) {
-            out += `
-            <a ${user.email}></a>
-        `;
-        // }
-        placeholder.innerHTML = out;
-    })
+$(async function() {
+    await authUser();
+});
+async function authUser() {
+    fetch("http://localhost:8080/api/user")
+        .then(res => res.json())
+        .then(authentication => {
+            $('#authUserEmail').append(authentication.email);
+            let roles = authentication.authorities.map(auth => auth.authority).toString().replaceAll("ROLE_", "").replaceAll(",", ", ");
+            $('#authUserRoles').append(roles);
+
+            let authUser = `$(
+            <tr>
+                <td>${authentication.id}</td>
+                <td>${authentication.username}</td>
+                <td>${authentication.email}</td>
+                <td>${roles}</td>)`;
+            $('#userProfileTableBody').append(authUser);
+        })
+}
 
 // Модальное окно Edit user
-// const form = document.getElementById("editUserModal");
-// function retrieveFormValue(event) {
-//     event.preventDefault();
-//     const {username, password, email, roles} = form;
-//     const values = {
-//         username: username.value,
-//         password: password.value,
-//         email: email.value,
-//         roles: roles.name,
-//     };
-// }
-// form.addEventListener("submit", retrieveFormValue);
+
 
 

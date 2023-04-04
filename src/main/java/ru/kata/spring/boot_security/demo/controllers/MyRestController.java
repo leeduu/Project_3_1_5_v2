@@ -2,7 +2,8 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
@@ -60,8 +61,9 @@ public class MyRestController {
     }
 
     @GetMapping("/user")   // данные пользователя                               // белый экран
-    public ResponseEntity<User> getUser(@AuthenticationPrincipal User user) {
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public User getUser(@CurrentSecurityContext(expression = "authentication")
+                                        Authentication authentication) {
+        return userService.findUserByEmail(authentication.getName());
     }
 
     @GetMapping("/roles")   // данные пользователя
