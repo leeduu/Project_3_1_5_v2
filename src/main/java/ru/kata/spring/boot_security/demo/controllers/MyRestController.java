@@ -66,7 +66,7 @@ public class MyRestController {
         return userService.findUserByEmail(authentication.getName());
     }
 
-    @GetMapping("/roles")   // данные пользователя
+    @GetMapping("/roles")   // все роли
     public ResponseEntity<List<Role>> showAllRoles() {
         return new ResponseEntity<>(roleService.getRolesList(), HttpStatus.OK);
     }
