@@ -42,13 +42,13 @@ public class MyRestController {
         return new ResponseEntity<>(userService.findUser(id), HttpStatus.OK);
     }
 
-    @PostMapping("/users")   // новый юзер
+    @PostMapping("/users/new")   // новый юзер
     public ResponseEntity<User> newUser(@RequestBody User newUser) {
         userService.save(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/users/edit/{id}")   // апдейт юзера
+    @PatchMapping("/users/{id}")   // апдейт юзера
     public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Long id) {
         userService.update(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -60,7 +60,7 @@ public class MyRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/user")   // данные пользователя                               // белый экран
+    @GetMapping("/user")   // данные пользователя
     public User getUser(@CurrentSecurityContext(expression = "authentication")
                                         Authentication authentication) {
         return userService.findUserByEmail(authentication.getName());
