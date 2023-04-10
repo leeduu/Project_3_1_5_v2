@@ -115,9 +115,9 @@ async function authUser() {
 
 
 // Модальное окно Delete user
-document.querySelector("#deleteUserButton").onclick = function() {
-    deleteUser();
-}
+// document.querySelector("#deleteUserButton").onclick = function() {
+//     deleteUser();
+// }
 async function deleteUser(id) {
     fetch("http://localhost:8080/api/users/" + id)
         .then(function (response) {  // to do sth with server response
@@ -186,9 +186,9 @@ async function newUser() {
             })
         }).then(res => res.json())
           .then(() => {
-              form.reset();                         // не показывает таблицу + ID увеличивается на 3
+              form.reset();             // не переключает на таблицу + ID увеличивается на 3
               allUsers();
-              $('#users-table-pane').click("show");
+              $('#allUsersTable').click();
           })
     });
 }
