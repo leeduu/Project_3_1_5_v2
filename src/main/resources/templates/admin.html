@@ -283,13 +283,13 @@
                                                         <input type="password" class="form-control form-control-sm" placeholder="Min 8 characters" style="max-width: 300px; margin: 0 auto"
                                                                name="password" id="newPassword" required/>
                                                         <br>
-                                                        <label class="col-sm-2 col-form-label" for="newUserRoles"><strong>Role</strong></label>
-                                                        <select class="form-select" name="roles" id="newUserRoles" size="2" multiple aria-label="multiple select example"
+                                                        <label class="col-sm-2 col-form-label"><strong>Role</strong></label>
+                                                        <select class="form-select" name="roles" id="newRoles" size="2" multiple aria-label="multiple select example"
                                                                 style="max-width: 300px; margin: 0 auto">
-                                                            <option th:each="role : ${rolesList}"
-                                                                    th:text="${role.name.toString().replaceAll('ROLE_', '')}"
-                                                                    th:value="${role.id}">
-                                                            </option>
+<!--                                                            <option th:each="role : ${rolesList}"-->
+<!--                                                                    th:text="${role.name.toString().replaceAll('ROLE_', '')}"-->
+<!--                                                                    th:value="${role.id}">-->
+<!--                                                            </option>-->
                                                         </select>
                                                         <br>
                                                         <input type="submit" id="submitNewUserButton" class="btn btn-success" value="Add new user"/>
