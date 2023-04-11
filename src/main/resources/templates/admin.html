@@ -111,84 +111,53 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="allUsersTableBody">
-<!--                                                <tr th:each="user: ${showAllUsers}">-->
-<!--                                                    <td th:text="${user.getId()}"/>-->
-<!--                                                    <td th:text="${user.getUsername()}"/>-->
-<!--                                                    <td th:text="${user.getEmail()}"/>-->
-<!--                                                    <td th:text="${user.getRoles()}"/>-->
+                                                    <!-- Delete User Modal -->
+                                                    <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <!-- Modal Header -->
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="deleteModalLabel">Delete user</h4>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                </div>
+                                                                <!-- Modal body  -->
+                                                                <div class="modal-body">
+                                                                    <div align="center">
+                                                                        <form id="deleteUserForm">
+                                                                            <label><strong>ID</strong></label>
+                                                                            <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
+                                                                                   id="deleteUserId" disabled/>
+                                                                            <br>
+                                                                            <label><strong>Username</strong></label>
+                                                                            <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
+                                                                                   id="deleteUseUsername"disabled/>
+                                                                            <br>
+                                                                            <label><strong>Password</strong></label>
+                                                                            <input type="password" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
+                                                                                   id="deleteUserPassword" disabled/>
+                                                                            <br>
+                                                                            <label><strong>Email</strong></label>
+                                                                            <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
+                                                                                   id="deleteUserEmail" disabled/>
+                                                                            <br>
+                                                                            <label class="col-sm-2 col-form-label"><strong>Role</strong></label>
+                                                                            <select class="form-select" size="2" multiple aria-label="multiple select example"
+                                                                                    style="max-width: 200px; margin: 0 auto" disabled
+                                                                                    id="deleteUserRoles">
+                                                                            </select>
 
-                                                    <!-- Кнопка Edit -->
-<!--                                                    <div class="container mt-3">-->
-<!--                                                        <td>-->
-<!--                                                            <button type="button" id="editUserButton" class="btn btn-info" data-bs-toggle="modal"-->
-<!--                                                                    th:data-bs-target="${'#editModal'+user.id}">-->
-<!--                                                            Edit-->
-<!--                                                            </button>-->
-
-<!--                                                        </td>-->
-
-<!--                                                    &lt;!&ndash; Кнопка Delete &ndash;&gt;-->
-<!--                                                        <td>-->
-<!--                                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"-->
-<!--                                                                    th:data-bs-target="${'#deleteModal'+user.id}">-->
-<!--                                                                Delete-->
-<!--                                                            </button>-->
-
-
-                                                            <!-- Delete User Modal -->
-                                                            <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog">
-                                                                    <div class="modal-content">
-                                                                        <!-- Modal Header -->
-                                                                        <div class="modal-header">
-                                                                            <h4 class="modal-title" id="deleteModalLabel">Delete user</h4>
-                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                                        </div>
-                                                                        <!-- Modal body  -->
-                                                                        <div class="modal-body">
-                                                                            <div align="center">
-                                                                                <form id="deleteUserForm">
-                                                                                    <label><strong>ID</strong></label>
-                                                                                    <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
-                                                                                           id="deleteUserId" disabled/>
-                                                                                    <br>
-                                                                                    <label><strong>Username</strong></label>
-                                                                                    <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
-                                                                                           id="deleteUseUsername"disabled/>
-                                                                                    <br>
-                                                                                    <label><strong>Password</strong></label>
-                                                                                    <input type="password" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
-                                                                                           id="deleteUserPassword" disabled/>
-                                                                                    <br>
-                                                                                    <label><strong>Email</strong></label>
-                                                                                    <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
-                                                                                           id="deleteUserEmail" disabled/>
-                                                                                    <br>
-                                                                                    <label class="col-sm-2 col-form-label"><strong>Role</strong></label>
-                                                                                    <select class="form-select" size="2" multiple aria-label="multiple select example"
-                                                                                            style="max-width: 200px; margin: 0 auto" disabled
-                                                                                            id="deleteUserRoles">
-<!--                                                                                       <option th:each="role : ${rolesList}"-->
-<!--                                                                                                th:text="${role.name.toString().replaceAll('ROLE_', '')}"-->
-<!--                                                                                                th:value="${role.id}">-->
-<!--                                                                                        </option>-->
-                                                                                    </select>
-
-                                                                        <!-- Modal footer -->
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" id="closeDeleteUserFormButton" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                            <button type="submit" id="submitDeleteUserFormButton" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
-                                                                        </div>
-                                                                        </form>
-                                                                            </div>
-                                                                        </div>
+                                                                <!-- Modal footer -->
+                                                                <div class="modal-footer">
+                                                                    <button type="button" id="closeDeleteUserFormButton" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" id="submitDeleteUserFormButton" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                                                                </div>
+                                                                </form>
                                                                     </div>
                                                                 </div>
-
                                                             </div>
-<!--                                                        </td>-->
-<!--                                                    </div>-->
-<!--                                                </tr>-->
+                                                        </div>
+
+                                                    </div>
                                                 </tbody>
 
                                                 <!-- Edit User Modal -->
@@ -206,31 +175,22 @@
                                                                     <label><strong>ID</strong></label>
                                                                     <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
                                                                            id="editUserId" disabled/>
-<!--                                                                    th:name="id"-->
                                                                     <br>
                                                                     <label><strong>Username</strong></label>
                                                                     <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
                                                                            id="editUserUsername"/>
-<!--                                                                    th:name="username"-->
                                                                     <br>
                                                                     <label><strong>Password</strong></label>
                                                                     <input type="password" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
                                                                            id="editUserPassword"/>
-<!--                                                                    th:name="password"-->
                                                                     <br>
                                                                     <label><strong>Email</strong></label>
                                                                     <input type="text" class="form-control form-control-sm" style="max-width: 200px; margin: 0 auto"
                                                                            id="editUserEmail"/>
-<!--                                                                    th:name="email"-->
                                                                     <br>
                                                                     <label class="col-sm-2 col-form-label"><strong>Role</strong></label>
                                                                     <select class="form-select" size="2" multiple aria-label="multiple select"
-                                                                            id="editUserRoles" style="max-width: 200px; margin: 0 auto">
-<!--                                                                        th:name="rolesList"-->
-<!--                                                                            <option id="rolesOption" th:each="role : ${rolesList}"-->
-<!--                                                                                    th:text="${role.name.toString().replaceAll('ROLE_', '')}"-->
-<!--                                                                                    th:value="${role.id}">-->
-<!--                                                                            </option>-->
+                                                                            id="editUserRoles" name="roles" style="max-width: 200px; margin: 0 auto">
                                                                     </select>
                                                                     <!-- Modal footer -->
                                                                     <div class="modal-footer">
@@ -244,9 +204,6 @@
                                                 </div>
                                             </table>
                                             </div>
-                                            <!-- Таблица юзеров ^ -->
-
-
 
                                         </td>
                                     </tr>
@@ -261,7 +218,7 @@
                             <div class="tab-content" id="newUserTabContent">
                                 <!-- "Таблица" для всей информации -->
                                 <div class="container-fluid my-main-container">
-                                    <table class="table table-bordered">                    <!-- Добавить верхнюю границу -->
+                                    <table class="table table-bordered">
                                         <thead>
                                         <th scope="col"><div class="container-fluid"><h5>Add new user</h5></div></th>
                                         </thead>
@@ -286,10 +243,6 @@
                                                         <label class="col-sm-2 col-form-label"><strong>Role</strong></label>
                                                         <select class="form-select" name="roles" id="newRoles" size="2" multiple aria-label="multiple select example"
                                                                 style="max-width: 300px; margin: 0 auto">
-<!--                                                            <option th:each="role : ${rolesList}"-->
-<!--                                                                    th:text="${role.name.toString().replaceAll('ROLE_', '')}"-->
-<!--                                                                    th:value="${role.id}">-->
-<!--                                                            </option>-->
                                                         </select>
                                                         <br>
                                                         <input type="submit" id="submitNewUserButton" class="btn btn-success" value="Add new user"/>
@@ -330,12 +283,6 @@
                                             </tr>
                                             </thead>
                                             <tbody id="userProfileTableBody">
-<!--                                            <tr>-->
-<!--                                                <td th:text="${auth_user.getId()}"/>-->
-<!--                                                <td th:text="${auth_user.getUsername()}"/>-->
-<!--                                                <td th:text="${auth_user.getEmail()}"/>-->
-<!--                                                <td th:text="${auth_user.getRoles()}"/>-->
-<!--                                            </tr>-->
                                             </tbody>
                                         </table>
                                     </div>

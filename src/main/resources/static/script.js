@@ -1,4 +1,3 @@
-
 // Вывод всех юзеров в таблицу                                                  // DONE
 $(async function() {
     await allUsers();
@@ -56,79 +55,81 @@ async function authUser() {
         })
 }
 
+// Модальное окно Edit user                                                          // DONE
+const editUserButton = document.querySelector('#editUserButton');
+editUserButton.addEventListener('click', editUser);
 
-// Модальное окно Edit user
-// document.querySelector("#editUserButton").onclick = function() {
-//     editUser();
-// }
-
-// async function editUser(id) {                                                    // ЮЗЕР НЕ ОБНОВЛЯЕТСЯ
-//     fetch("http://localhost:8080/api/users/" + id)
-//         .then(function (response) {  // to do sth with server response
-//             return response.json();
-//         })
-//         .then(user => {
-//             let form = document.forms["editUserForm"];
-//             form.addEventListener("submit", event => {
-//                 event.preventDefault();
-//                 form.editUserId.value = user.id;
-//                 form.editUserUsername.value = user.username;
-//                 form.editUserPassword.value = user.password;
-//                 form.editUserEmail.value = user.email;
-//                 // form.editUserRoles.value = ...;
-//
-//                 fetch("http://localhost:8080/api/roles")
-//                     .then(res => res.json())
-//                     .then(roles => {
-//                         roles.forEach(role => {
-//                             $('#editUserRoles').append($('<option>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
-//                         })
-//                     })
-//                 $('#editUserModal').modal('show');
-//             })
-//
-//
-//             fetch("http://localhost:8080/api/users/" + id, {
-//                 method: 'PATCH',
-//                 headers: {
-//                     'Content-Type': 'text/javascript'
-//                 },
-//                 body: JSON.stringify({
-//                     id: form.editUserId.value,
-//                     username: form.editUserUsername.value,
-//                     password: form.editUserPassword.value,
-//                     email: form.editUserEmail.value,
-//                     // roles: editUserRoles
-//                 })
-//             }).then(() => {
-//                 $('#submitEditUserFormButton').click();
-//                 allUsers();
-//             }).then(() => {       // очистка поля editUserRoles, чтобы не копились роли
-//                 $("#editUserRoles").empty();
-//             })
-//
-//         })
-// }
-
-
-
-
-
-// Модальное окно Delete user
-// document.querySelector("#deleteUserButton").onclick = function() {
-//     deleteUser();
-// }
-async function deleteUser(id) {
+async function editUser(id) {
+    let form = document.querySelector("#editUserForm");
     fetch("http://localhost:8080/api/users/" + id)
         .then(function (response) {  // to do sth with server response
             return response.json();
         })
         .then(user => {
-            let form = document.forms["deleteUserForm"];
-            form.deleteUserId.value = user.id;
-            form.deleteUseUsername.value = user.username;
-            form.deleteUserPassword.value = user.password;
-            form.deleteUserEmail.value = user.email;
+
+            form.editUserId.value = user.id;
+            form.editUserUsername.value = user.username;
+            form.editUserPassword.value = user.password;
+            form.editUserEmail.value = user.email;
+            fetch("http://localhost:8080/api/roles")
+                .then(res => res.json())
+                .then(roles => {
+                    roles.forEach(role => {
+                        $('#editUserRoles').append($('<option/>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
+                    })
+                })
+            $('#editUserModal').modal('show');
+        });
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let editRoles = [];
+        if (form.roles !== undefined) {
+            for (let i = 0; i < form.roles.length; i++) {
+                if (form.roles[i].selected) editRoles.push({
+                    id: form.roles[i].value,
+                    name: "ROLE_" + form.roles[i].text
+                })
+            }
+        }
+        fetch("http://localhost:8080/api/users/" + id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: form.editUserId.value,
+                username: form.editUserUsername.value,
+                email: form.editUserEmail.value,
+                password: form.editUserPassword.value,
+                roles: editRoles
+            })
+        }).then(res => res.json())
+            .then(() => {
+            $('#closeEditUserFormButton').click();
+            allUsers();
+        })
+    })
+}
+
+// Модальное окно Delete user                                                         // DONE
+// $(async function() {
+//     await deleteUser();
+// });
+const deleteUserButton = document.querySelector('#deleteUserButton');
+deleteUserButton.addEventListener('click', deleteUser);
+
+async function deleteUser(id) {
+    let editForm = document.querySelector("#deleteUserForm");
+    fetch("http://localhost:8080/api/users/" + id)
+        .then(function (response) {  // to do sth with server response
+            return response.json();
+        })
+        .then(user => {
+
+            editForm.deleteUserId.value = user.id;
+            editForm.deleteUseUsername.value = user.username;
+            editForm.deleteUserPassword.value = user.password;
+            editForm.deleteUserEmail.value = user.email;
             fetch("http://localhost:8080/api/roles")
                 .then(res => res.json())
                 .then(roles => {
@@ -137,58 +138,66 @@ async function deleteUser(id) {
                     })
                 })
             $('#deleteUserModal').modal('show');
-        })
+        });
+    editForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+        fetch("http://localhost:8080/api/users/" + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(() => {
+                allUsers();
+            })
+    })
 }
 
-
-
-
-
-
-
-// New User                                                         // юзер не добавился, в адресной строке
-$(async function() {
-    await newUser();
+// New User                                              // ID увеличивается на 3
+$(async function() {                                     // в базе создается лишняя таблица
+    await newUser();                                     // ПЕРЕСТАЛ ПРЕДЛАГАТЬ РОЛИ
 });
+// // const newUserButton = document.querySelector('#new-user');
+// // newUserButton.addEventListener('click', newUser);
 async function newUser() {
-    await fetch("http://localhost:8080/api/roles")
+    let newForm = document.querySelector("#newUserForm");
+    fetch("http://localhost:8080/api/roles")
         .then(res => res.json())
         .then(roles => {
             roles.forEach(role => {
-                $('#newRoles').append($('<option>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
+                $('#newRoles').append($('<option/>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
             })
-        })
+        });
+    // $('#newUserForm').show();
 
-    const form = document.querySelector("#newUserForm");
-    form.addEventListener("submit", event => {
+
+    newForm.addEventListener("submit", event => {
         event.preventDefault();
 
-        let newRoles = [];
-        if (form.roles !== undefined) {
-            for (let i = 0; i < form.roles.length; i++) {
-                if (form.roles[i].selected) newRoles.push({
-                    id: form.roles[i].value,
-                    name: "ROLE_" + form.roles[i].text
+        let roles = [];
+        if (newForm.roles !== undefined) {
+            for (let i = 0; i < newForm.roles.length; i++) {
+                if (newForm.roles[i].selected) roles.push({
+                    id: newForm.roles[i].value,
+                    name: "ROLE_" + newForm.roles[i].text
                 })
             }
         }
-
         fetch("http://localhost:8080/api/users/new", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                username: form.newUsername.value,
-                email: form.newEmail.value,
-                password: form.newPassword.value,
-                roles: newRoles
+                username: newForm.newUsername.value,
+                email: newForm.newEmail.value,
+                password: newForm.newPassword.value,
+                roles: roles
             })
         }).then(res => res.json())
           .then(() => {
-              form.reset();             // не переключает на таблицу + ID увеличивается на 3
+              newForm.reset();
               allUsers();
-              $('#allUsersTable').click();
+              $('#users-table').click();
           })
     });
 }
