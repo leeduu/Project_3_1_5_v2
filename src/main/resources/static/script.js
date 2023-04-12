@@ -55,39 +55,48 @@ async function authUser() {
         })
 }
 
+// Вывод ролей в form-select
+fetch("http://localhost:8080/api/roles")
+    .then(response => response.json())
+    .then(roles => {
+        roles.forEach(role => {
+            $('.form-select').append($('<option/>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
+        })
+    })
+
 // Модальное окно Edit user                                                          // DONE
 const editUserButton = document.querySelector('#editUserButton');
 editUserButton.addEventListener('click', editUser);
 
 async function editUser(id) {
-    let form = document.querySelector("#editUserForm");
+    let editForm = document.querySelector("#editUserForm");
     fetch("http://localhost:8080/api/users/" + id)
         .then(function (response) {  // to do sth with server response
             return response.json();
         })
         .then(user => {
 
-            form.editUserId.value = user.id;
-            form.editUserUsername.value = user.username;
-            form.editUserPassword.value = user.password;
-            form.editUserEmail.value = user.email;
-            fetch("http://localhost:8080/api/roles")
-                .then(res => res.json())
-                .then(roles => {
-                    roles.forEach(role => {
-                        $('#editUserRoles').append($('<option/>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
-                    })
-                })
+            editForm.editUserId.value = user.id;
+            editForm.editUserUsername.value = user.username;
+            editForm.editUserPassword.value = user.password;
+            editForm.editUserEmail.value = user.email;
+            // fetch("http://localhost:8080/api/roles")
+            //     .then(editResponse => editResponse.json())
+            //     .then(editRoles => {
+            //         editRoles.forEach(role => {
+            //             $('#editUserRoles').append($('<option/>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
+            //         })
+            //     })
             $('#editUserModal').modal('show');
         });
-    form.addEventListener('submit', (e) => {
+    editForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        let editRoles = [];
-        if (form.roles !== undefined) {
-            for (let i = 0; i < form.roles.length; i++) {
-                if (form.roles[i].selected) editRoles.push({
-                    id: form.roles[i].value,
-                    name: "ROLE_" + form.roles[i].text
+        let editRolesArray = [];
+        if (editForm.roles !== undefined) {
+            for (let i = 0; i < editForm.roles.length; i++) {
+                if (editForm.roles[i].selected) editRolesArray.push({
+                    id: editForm.roles[i].value,
+                    name: "ROLE_" + editForm.roles[i].text
                 })
             }
         }
@@ -97,11 +106,11 @@ async function editUser(id) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                id: form.editUserId.value,
-                username: form.editUserUsername.value,
-                email: form.editUserEmail.value,
-                password: form.editUserPassword.value,
-                roles: editRoles
+                id: editForm.editUserId.value,
+                username: editForm.editUserUsername.value,
+                email: editForm.editUserEmail.value,
+                password: editForm.editUserPassword.value,
+                roles: editRolesArray
             })
         }).then(res => res.json())
             .then(() => {
@@ -119,27 +128,27 @@ const deleteUserButton = document.querySelector('#deleteUserButton');
 deleteUserButton.addEventListener('click', deleteUser);
 
 async function deleteUser(id) {
-    let editForm = document.querySelector("#deleteUserForm");
+    let deleteForm = document.querySelector("#deleteUserForm");
     fetch("http://localhost:8080/api/users/" + id)
         .then(function (response) {  // to do sth with server response
             return response.json();
         })
         .then(user => {
 
-            editForm.deleteUserId.value = user.id;
-            editForm.deleteUseUsername.value = user.username;
-            editForm.deleteUserPassword.value = user.password;
-            editForm.deleteUserEmail.value = user.email;
-            fetch("http://localhost:8080/api/roles")
-                .then(res => res.json())
-                .then(roles => {
-                    roles.forEach(role => {
-                        $('#deleteUserRoles').append($('<option/>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
-                    })
-                })
+            deleteForm.deleteUserId.value = user.id;
+            deleteForm.deleteUseUsername.value = user.username;
+            deleteForm.deleteUserPassword.value = user.password;
+            deleteForm.deleteUserEmail.value = user.email;
+            // fetch("http://localhost:8080/api/roles")
+            //     .then(deleteResponse => deleteResponse.json())
+            //     .then(deleteRoles => {
+            //         deleteRoles.forEach(role => {
+            //             $('#deleteUserRoles').append($('<option/>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
+            //         })
+            //     })
             $('#deleteUserModal').modal('show');
         });
-    editForm.addEventListener('submit', (e) => {
+    deleteForm.addEventListener('submit', (e) => {
         e.preventDefault()
         fetch("http://localhost:8080/api/users/" + id, {
             method: 'DELETE',
@@ -152,53 +161,46 @@ async function deleteUser(id) {
     })
 }
 
-// New User                                              // ID увеличивается на 3
-$(async function() {                                     // в базе создается лишняя таблица
-    await newUser();                                     // ПЕРЕСТАЛ ПРЕДЛАГАТЬ РОЛИ
-});
-// // const newUserButton = document.querySelector('#new-user');
-// // newUserButton.addEventListener('click', newUser);
+// New User
+                                                                        // ID увеличивается на 3
+                                                                        // в базе создается лишняя таблица
+
+const newUserButton = document.querySelector('#new-user');
+newUserButton.addEventListener('click', newUser);
+
 async function newUser() {
     let newForm = document.querySelector("#newUserForm");
-    fetch("http://localhost:8080/api/roles")
-        .then(res => res.json())
-        .then(roles => {
-            roles.forEach(role => {
-                $('#newRoles').append($('<option/>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
-            })
-        });
-    // $('#newUserForm').show();
 
-
-    newForm.addEventListener("submit", event => {
-        event.preventDefault();
-
-        let roles = [];
-        if (newForm.roles !== undefined) {
-            for (let i = 0; i < newForm.roles.length; i++) {
-                if (newForm.roles[i].selected) roles.push({
-                    id: newForm.roles[i].value,
-                    name: "ROLE_" + newForm.roles[i].text
+    newForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let newRolesArray = [];
+        if (newForm.rolesNew !== undefined) {
+            for (let i = 0; i < newForm.rolesNew.length; i++) {
+                if (newForm.rolesNew[i].selected) newRolesArray.push({
+                    id: newForm.rolesNew[i].value,
+                    name: "ROLE_" + newForm.rolesNew[i].text
                 })
             }
         }
         fetch("http://localhost:8080/api/users/new", {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 username: newForm.newUsername.value,
                 email: newForm.newEmail.value,
                 password: newForm.newPassword.value,
-                roles: roles
+                roles: newRolesArray
             })
         }).then(res => res.json())
-          .then(() => {
-              newForm.reset();
-              allUsers();
-              $('#users-table').click();
-          })
-    });
+            .then(() => {
+                $('#users-table').click();
+                newForm.reset();
+            });
+
+    })
 }
+
+
 
