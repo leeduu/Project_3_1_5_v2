@@ -162,9 +162,9 @@ async function deleteUser(id) {
 }
 
 // New User
+                                                                        // Не записывается
                                                                         // ID увеличивается на 3
                                                                         // в базе создается лишняя таблица
-
 const newUserButton = document.querySelector('#new-user');
 newUserButton.addEventListener('click', newUser);
 
@@ -174,11 +174,11 @@ async function newUser() {
     newForm.addEventListener('submit', (e) => {
         e.preventDefault();
         let newRolesArray = [];
-        if (newForm.rolesNew !== undefined) {
-            for (let i = 0; i < newForm.rolesNew.length; i++) {
-                if (newForm.rolesNew[i].selected) newRolesArray.push({
-                    id: newForm.rolesNew[i].value,
-                    name: "ROLE_" + newForm.rolesNew[i].text
+        if (newForm.newRoles !== undefined) {
+            for (let i = 0; i < newForm.newRoles.length; i++) {
+                if (newForm.newRoles[i].selected) newRolesArray.push({
+                    id: newForm.newRoles[i].value,
+                    name: "ROLE_" + newForm.newRoles[i].text
                 })
             }
         }
@@ -201,6 +201,4 @@ async function newUser() {
 
     })
 }
-
-
 
