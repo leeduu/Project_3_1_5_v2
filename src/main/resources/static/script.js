@@ -65,11 +65,24 @@ fetch("http://localhost:8080/api/roles")
     })
 
 // Модальное окно Edit user                                                          // DONE
-const editUserButton = document.querySelector('#editUserButton');
-editUserButton.addEventListener('click', editUser);
+// const eb = document.getElementById("editUserButton");
+// eb.addEventListener("click", async function() {
+//     await editUser();
+// });
+
+// $(async function() {
+//     await editUser();
+// });
+
+$(document).ready(function() {
+    const eb = document.getElementById('editUserButton');
+    if (eb) {
+        eb.addEventListener('click', editUser);
+    }
+});
 
 async function editUser(id) {
-    let editForm = document.querySelector("#editUserForm");
+    let editForm = document.getElementById("editUserForm");
     fetch("http://localhost:8080/api/users/" + id)
         .then(function (response) {  // to do sth with server response
             return response.json();
@@ -80,13 +93,7 @@ async function editUser(id) {
             editForm.editUserUsername.value = user.username;
             editForm.editUserPassword.value = user.password;
             editForm.editUserEmail.value = user.email;
-            // fetch("http://localhost:8080/api/roles")
-            //     .then(editResponse => editResponse.json())
-            //     .then(editRoles => {
-            //         editRoles.forEach(role => {
-            //             $('#editUserRoles').append($('<option/>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
-            //         })
-            //     })
+
             $('#editUserModal').modal('show');
         });
     editForm.addEventListener('submit', (e) => {
@@ -121,14 +128,27 @@ async function editUser(id) {
 }
 
 // Модальное окно Delete user                                                         // DONE
+// const db = document.getElementById("deleteUserButton");
+// db.addEventListener("click", async function() {
+//     await deleteUser();
+// });
+
+$(document).ready(function() {
+    const db = document.getElementById('deleteUserButton');
+    if(db) {
+        db.addEventListener('click', deleteUser);
+    }
+});
+
 // $(async function() {
 //     await deleteUser();
 // });
-const deleteUserButton = document.querySelector('#deleteUserButton');
-deleteUserButton.addEventListener('click', deleteUser);
+
+// const deleteUserButton = document.getElementById('deleteUserButton');
+// deleteUserButton.addEventListener('click', deleteUser);
 
 async function deleteUser(id) {
-    let deleteForm = document.querySelector("#deleteUserForm");
+    let deleteForm = document.getElementById("deleteUserForm");
     fetch("http://localhost:8080/api/users/" + id)
         .then(function (response) {  // to do sth with server response
             return response.json();
@@ -139,13 +159,7 @@ async function deleteUser(id) {
             deleteForm.deleteUseUsername.value = user.username;
             deleteForm.deleteUserPassword.value = user.password;
             deleteForm.deleteUserEmail.value = user.email;
-            // fetch("http://localhost:8080/api/roles")
-            //     .then(deleteResponse => deleteResponse.json())
-            //     .then(deleteRoles => {
-            //         deleteRoles.forEach(role => {
-            //             $('#deleteUserRoles').append($('<option/>').attr("value", role.id).text(role.name.replace("ROLE_", "")));
-            //         })
-            //     })
+
             $('#deleteUserModal').modal('show');
         });
     deleteForm.addEventListener('submit', (e) => {
@@ -162,43 +176,118 @@ async function deleteUser(id) {
 }
 
 // New User
-                                                                        // Не записывается
-                                                                        // ID увеличивается на 3
-                                                                        // в базе создается лишняя таблица
-const newUserButton = document.querySelector('#new-user');
-newUserButton.addEventListener('click', newUser);
+//                                                                         Не записывается
+//                                                                         ID увеличивается на 3
+//                                                                         в базе создается лишняя таблица
+// const newUserButton = document.querySelector('#new-user');
+// newUserButton.addEventListener('click', newUser);
+//
+// async function newUser() {
+//     let newForm = document.querySelector("#newUserForm");
+//
+//     newForm.addEventListener('submit', (e) => {
+//         e.preventDefault();
+//         console.log("hiii1")
+//         let newRolesArray = [];
+//         if (newForm.newRoles !== undefined) {
+//             for (let i = 0; i < newForm.newRoles.length; i++) {
+//                 if (newForm.newRoles[i].selected) newRolesArray.push({
+//                     id: newForm.newRoles[i].value,
+//                     name: "ROLE_" + newForm.newRoles[i].text
+//                 })
+//             }
+//         }
+//         fetch("http://localhost:8080/api/users/new", {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({
+//                 username: newForm.newUsername.value,
+//                 email: newForm.newEmail.value,
+//                 password: newForm.newPassword.value,
+//                 roles: newRolesArray
+//             })
+//         }).then(res => res.json())
+//             .then(() => {
+//                 $('#users-table').click();
+//                 newForm.reset();
+//             });
+//
+//     })
+// }
+
+
+// const newForm = document.getElementById("#newUserForm");
+// newForm.addEventListener("submit", event => {
+//     event.preventDefault(); // prevent the form from submitting normally
+//     newUser();
+//     console.log("test")
+// });
+
+// const nb = document.getElementById("submitNewUserButton");
+// nb.addEventListener("click", async function() {
+//     await newUser();
+// });
+
+// $(async function() {
+//     await newUser();
+// });
+
+$(document).ready(function() {
+    const nb = document.getElementById('submitNewUserButton');
+    nb.addEventListener('click', newUser);
+});
 
 async function newUser() {
-    let newForm = document.querySelector("#newUserForm");
+    const username = document.getElementById("#newUsername");
+    const email = document.getElementById("#newEmail");
+    const password = document.getElementById("#newPassword");
+    const roles = document.getElementById("#newRoles");
+    const newForm = document.getElementById("#newUserForm");
 
     newForm.addEventListener('submit', (e) => {
         e.preventDefault();
+
         let newRolesArray = [];
         if (newForm.newRoles !== undefined) {
-            for (let i = 0; i < newForm.newRoles.length; i++) {
-                if (newForm.newRoles[i].selected) newRolesArray.push({
-                    id: newForm.newRoles[i].value,
-                    name: "ROLE_" + newForm.newRoles[i].text
+            for (let i = 0; i < newForm.newRoles.options.length; i++) {
+                if (newForm.newRoles.options[i].selected) newRolesArray.push({
+                    id: newForm.newRoles.options[i].value,
+                    name: "ROLE_" + newForm.newRoles.options[i].text
                 })
             }
         }
+
+        const user = {
+            username: username.value,
+            email: email.value,
+            password: password.value,
+            roles: roles
+        };
+
         fetch("http://localhost:8080/api/users/new", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                username: newForm.newUsername.value,
-                email: newForm.newEmail.value,
-                password: newForm.newPassword.value,
-                roles: newRolesArray
-            })
-        }).then(res => res.json())
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
             .then(() => {
                 $('#users-table').click();
                 newForm.reset();
             });
 
-    })
+        // $.ajax({
+        //     type: "POST",
+        //     url: "http://localhost:8080/api/users/new",
+        //     data: user,
+        //     dataType: "json",
+        //     encode: true,
+        // }).done(function (data) {
+        //     console.log(data);
+        // });
+    });
 }
 
