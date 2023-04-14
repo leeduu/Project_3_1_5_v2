@@ -22,11 +22,6 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-//    @GetMapping
-//    public String adminPage() {
-//        return "admin";
-//    }
-
     @GetMapping
     public String showAllUsers(Principal principal, Model model) {   // Показ всех юзеров
         model.addAttribute("showAllUsers", userService.showAllUsers());

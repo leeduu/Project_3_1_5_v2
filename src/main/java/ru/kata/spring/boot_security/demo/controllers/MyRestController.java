@@ -25,13 +25,6 @@ public class MyRestController {
         this.roleService = roleService;
     }
 
-//    @GetMapping("/users")   // показ всех юзеров
-//    public List<User> showAllUsers() {
-//        List<User> usersList = new ArrayList<>();
-//        userService.showAllUsers().forEach(usersList::add);
-//        return usersList;
-//    }
-
     @GetMapping("/users")   // показ всех юзеров
     public ResponseEntity<List<User>> showAllUsers() {
         return new ResponseEntity<>(userService.showAllUsers(), HttpStatus.OK);
