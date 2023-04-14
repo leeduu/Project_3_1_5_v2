@@ -23,61 +23,35 @@ public class AdminController {
     }
 
     @GetMapping
-    public String showAllUsers(Principal principal, Model model) {   // Показ всех юзеров
-        model.addAttribute("showAllUsers", userService.showAllUsers());
-        model.addAttribute("rolesList", roleService.getRolesList());
-        User user = userService.findUserByEmail(principal.getName());
-        model.addAttribute("auth_user", user);
+    public String showAllUsers() {   // Показ всех юзеров
         return "admin";
     }
 
     @GetMapping("/edit/{editId}") //форма апдейта юзера
-    public String updateUser(Model model, @PathVariable("editId") Long id) {
-        model.addAttribute("user", userService.findUser(id));
-        model.addAttribute("rolesList", roleService.getRolesList());
+    public String updateUser() {
         return "update";
     }
 
     @PatchMapping("/edit/{editId}") // апдейт юзера и показ всех юзеров
-    public String update(@RequestParam(name = "rolesList", defaultValue = "1") String role,
-                         @RequestParam(name = "username") String username,
-                         @RequestParam(name = "password") String password,
-                         @RequestParam(name = "email") String email,
-                         @PathVariable("editId") String id) {
-        Set<Role> newRoles = new HashSet<>();
-        newRoles.add(roleService.findRole(Long.valueOf(role)));
-        User user = userService.findUser(Long.valueOf(id));
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setRoles(newRoles);
-        if (!password.equals(user.getPassword())) {
-            user.setPassword(password);
-        }
-        userService.update(user);
+    public String update() {
+
         return "redirect:/admin";
     }
 
     @GetMapping("/new") // форма создания нового юзера
-    public String newUserForm(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("rolesList", roleService.getRolesList());
+    public String newUserForm() {
+
         return "new";
     }
 
     @PostMapping("/new")    // сохранение нового юзера и показ всех юзеров
-    public String newUser(@ModelAttribute("user") User user,
-                          @RequestParam(name = "role", defaultValue = "1") String role) {
-        Set<Role> newRoles = new HashSet<>();
-            Long roleId = Long.valueOf(role);
-            newRoles.add(roleService.findRole(roleId));
-        user.setRoles(newRoles);
-        userService.save(user);
+    public String newUser() {
+
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/delete/{deleteId}")    //удаление юзера || В delete лучше RequestParam
-    public String deleteUser(@PathVariable("deleteId") Long id) {
-        userService.delete(id);
+    @DeleteMapping("/delete/{deleteId}")    //удаление юзера
+    public String deleteUser() {
         return "redirect:/admin";
     }
 
